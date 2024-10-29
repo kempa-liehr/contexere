@@ -3,13 +3,28 @@
 pyName
 ======
 
+Naming convention for research artefacts
+----------------------------------------
 
-    Naming convention for data artefacts
+Scientists and engineer create a multitude of digital artefacts during their daily work:
+    - experimental results,
+    - simulation results,
+    - literate programming notebooks analysing experiments and simulations
+    - statistical models,
+    - machine learning models,
+    - figures,
+    - tables, etc
+
+In order to trace and track these multiple interconnected research artefacts, hierarchical naming scheme are a powerful
+tool to document the connection between research artefacts, find previous research outputs, and push the overall
+methodology towards reproducible research [1].
+
+The following naming scheme has evolved over several years to track research artefacts of all kinds.
 
 The general scheme is: `DSyymd[hMM]e[_x]__title`
 
--   **`DS`:** Initials of project. `DS` is the abbreviation of *Data Science*
--   **`yy`:** [0-9][0-9] are the last two digits of the years in the 21st century. I won't live beyond that. So, I do not care for following centuries. This is conform to the 2018 scheme and the schemes before 2000.
+-   **`DS`:** Project specific initials. Here, `DS` stands for *Data Science*.
+-   **`yy`:** [0-9][0-9] are the last two digits of the years in the 21st century. I won't live beyond that. So, I do not care for following centuries.
 -   **`m`:** [o-z] these letters map to the respective months.
 -   **`d`:** [1-9,A-V] represent the 31 days of a month. Digits and upper-case characters have approximately the same height, such that this element gives a visual structure to the name, which divides the date from the daily counter.
 -   **`h`:** [a-x] these optional letters refer to the hours of the day
@@ -35,14 +50,14 @@ The general scheme is: `DSyymd[hMM]e[_x]__title`
 | `z` | December  |     |     |     |     |     |     |   11 | l   |   23 | x   
 |-----+-----------+-----+-----+-----+-----+-----+-----+------+-----+------+-----|
 
+- The first dataset created on Friday 01.01.2021 would be named `DS21o1a`.
+- The second dataset created on the same day would be named `DS21o1b`.
+- An analysis (e.g. Jupyter notebook) of the first data set started after the second data set had been created would be named `DS21o1c_a`. Exported figures of this analysis should be named `DS21o1c_a__[plottype].[filetype]`.
+- An analysis of data set `DS21o1b` started on 2nd January should be named `DS21o2a_1b`.
+- An meta analysis of `DS21o1c_a` and `DS21o2a_1b` started on 11th February should be named `DS21pBa_o1c_2a`.
 
-The first dataset created on <span class="timestamp-wrapper"><span class="timestamp">[2021-01-01 Fri] </span></span> would be named `DS21o1a`.
 
+References
+==========
 
-.. _pyscaffold-notes:
-
-Note
-====
-
-This project has been set up using PyScaffold 4.5. For details and usage
-information on PyScaffold see https://pyscaffold.org/.
+[1] Martin Kühne and Andreas W. Liehr. Improving the traditional information management in natural sciences. Data Science Journal, 8(1):18–26, 2009. doi: 10.2481/dsj.8.18.
