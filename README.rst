@@ -69,11 +69,9 @@ The general scheme is: ``DSyymd[hMM]e[_x]__title``
 
 Installation
 ============
-The module ``contexere`` can be installed with the following commands::
+The module ``contexere`` can be installed from PyPi::
 
-    git clone git@github.com:kempa-liehr/contexere.git
-    cd contexere
-    pip install .
+    pip install contexere
 
 Usage
 =====
