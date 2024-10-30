@@ -25,7 +25,7 @@ import logging
 import sys
 
 from pyname import __version__
-from pyname.scheme import abbreviate_date
+from pyname.scheme import abbreviate_date, abbreviate_time
 
 __author__ = "Andreas W. Kempa-Liehr"
 __copyright__ = "Andreas W. Kempa-Liehr"
@@ -52,6 +52,13 @@ def parse_args(args):
     )
     parser.add_argument(dest="project", nargs='?',
                         help="Project abbreviation (default DS)", type=str, default='DS')
+    parser.add_argument(
+        "-t",
+        "--time",
+        dest="time",
+        help="add time abbreviation",
+        action="store_true"
+    )
     parser.add_argument(
         "-v",
         "--verbose",
@@ -87,7 +94,11 @@ def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     _logger.debug("Starting crazy calculations...")
-    print(args.project + abbreviate_date() +'a')
+    if args.time:
+        ending = abbreviate_time()
+    else:
+        ending = 'a'
+    print(args.project + abbreviate_date() + ending)
     _logger.info("Script ends here")
 
 
