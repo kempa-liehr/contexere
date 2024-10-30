@@ -1,8 +1,10 @@
 import argparse
 import logging
+from pathlib import Path
 import sys
 
 from contexere import __version__
+from contexere.discover import summary
 from contexere.scheme import abbreviate_date, abbreviate_time
 
 __author__ = "Andreas W. Kempa-Liehr"
@@ -28,8 +30,16 @@ def parse_args(args):
         action="version",
         version=f"contexere {__version__}",
     )
-    parser.add_argument(dest="project", nargs='?',
-                        help="Project abbreviation (default DS)", type=str, default='DS')
+    parser.add_argument(dest="path",
+                        help="Path to folder with research artefacts (default: current working dir)", type=Path,
+                        default=Path.cwd())
+    parser.add_argument(
+        "-s",
+        "--summary",
+        dest="summary",
+        help="Sumarize files following the naming convention",
+        action="store_true"
+    )
     parser.add_argument(
         "-t",
         "--time",
@@ -71,12 +81,14 @@ def setup_logging(loglevel):
 def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
-    _logger.debug("Starting crazy calculations...")
+    _logger.debug("Start building context...")
+    if args.summary:
+        summary(args.path)
     if args.time:
         ending = abbreviate_time()
     else:
         ending = 'a'
-    print(args.project + abbreviate_date() + ending)
+    # print(args.project + abbreviate_date() + ending)
     _logger.info("Script ends here")
 
 
