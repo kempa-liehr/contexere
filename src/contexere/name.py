@@ -92,7 +92,12 @@ def main(args):
     if args.summary:
         summary(args.path)
     if args.next:
-        print(suggest_next(args.path))
+        try:
+            print(suggest_next(args.path))
+        except AssertionError:
+            print(f"The folder '{args.path}' does not have any files matching the naming scheme. "
+                  "Use the '--project' argument to provide a project abbreviation.")
+            sys.exit(1)
     if args.time:
         ending = abbreviate_time()
     else:
