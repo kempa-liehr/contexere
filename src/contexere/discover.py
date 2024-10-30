@@ -34,7 +34,6 @@ def build_context(directory='.'):
 
                 context[project][(date, step)].append(path)
                 timeline[date + step][project].append(path)
-    print(timeline.keys())
     return context, timeline
 
 def last(timeline):
@@ -42,6 +41,7 @@ def last(timeline):
     events.sort()
     latest = events[-1]
     return [project + latest for project in timeline[latest]]
+
 def summary(directory='.'):
     context, timeline = build_context(directory)
     summary = pd.Series({project: len(context[project])
