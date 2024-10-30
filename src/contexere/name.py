@@ -5,7 +5,7 @@ import sys
 
 from contexere import __version__
 from contexere.discover import summary
-from contexere.scheme import abbreviate_date, abbreviate_time
+from contexere.scheme import abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
 __copyright__ = "Andreas W. Kempa-Liehr"
@@ -33,6 +33,13 @@ def parse_args(args):
     parser.add_argument(dest="path",
                         help="Path to folder with research artefacts (default: current working dir)", type=Path,
                         default=Path.cwd())
+    parser.add_argument(
+        "-n",
+        "--next",
+        dest="next",
+        help="Suggest next artefact name",
+        action="store_true"
+    )
     parser.add_argument(
         "-s",
         "--summary",
@@ -84,6 +91,8 @@ def main(args):
     _logger.debug("Start building context...")
     if args.summary:
         summary(args.path)
+    if args.next:
+        print(suggest_next(args.path))
     if args.time:
         ending = abbreviate_time()
     else:
