@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pyname.scheme import abbreviate_date
+from contexere.scheme import abbreviate_date
 
 def test_first_day_of_month():
     day = datetime(2022, 1, 1)

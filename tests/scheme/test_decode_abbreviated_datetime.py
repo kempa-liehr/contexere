@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytz
 
-from pyname.scheme import decode_abbreviated_datetime
+from contexere.scheme import decode_abbreviated_datetime
 
 def test_day_only():
     assert decode_abbreviated_datetime('22pM') == datetime(2022, 2, 22, tzinfo=pytz.timezone('UTC'))
