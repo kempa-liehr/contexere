@@ -87,16 +87,19 @@ The project provides the command line tool ``name``.
       -vv, --very-verbose  set loglevel to DEBUG
 
 
-Calling the tool without any arguments return the date abbreviation assuming the default project name ``DS``:
+Calling the tool without any arguments return the date abbreviation assuming the default project name ``DS``::
+
     name
     DS24xUa
 
-A different project name can be provided as argument of ``name``:
+A different project name can be provided as argument of ``name``::
+
     name myProject
     myProject24xUa
 
 The arguments ``-t`` or ``--time`` can be used to create a time-sensitive artefact name, which might be useful if
-time-series windows need unique labels for systematic time-series feature engineering:
+time-series windows need unique labels for systematic time-series feature engineering::
+
     name --time
     DS24xUi54
 
