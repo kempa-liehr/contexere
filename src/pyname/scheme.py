@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 import pytz
 
-from pyname import __month_dict__, __day_dict__
+from pyname import __month_dict__, __day_dict__, __hours__
 
 def abbreviate_date(date=None, tz=pytz.utc,
                     month=__month_dict__, day=__day_dict__):
@@ -16,12 +16,11 @@ def abbreviate_date(date=None, tz=pytz.utc,
     return year + month[date.month] + day[date.day]
 
 
-def abbreviate_time(date=None, seconds=False, tz=pytz.utc):
+def abbreviate_time(date=None, seconds=False, tz=pytz.utc, hour=__hours__):
     if date is None:
         date = datetime.datetime.now(tz=tz)
     elif type(date) == str:
         date = pd.Timestamp(date)
-    hour = list(map(str, range(1, 1))) + list(map(chr, range(ord('a'), ord('x') + 1)))
     abbr = hour[date.hour] + '{:02}'.format(date.minute)
     if seconds:
         return abbr + '{:02}'.format(date.second)

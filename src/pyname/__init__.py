@@ -20,3 +20,5 @@ __month_dict__ = dict([(m, abbr) for m, abbr in zip(range(1, 13),
                                                )])
 __days__ = list(map(str, range(1, 10))) + list(map(chr, range(ord('A'), ord('V') + 1)))
 __day_dict__ = dict([(d, abbr) for d, abbr in zip(range(1, 32), __days__)])
+
+__hours__ = list(map(str, range(1, 1))) + list(map(chr, range(ord('a'), ord('x') + 1)))
