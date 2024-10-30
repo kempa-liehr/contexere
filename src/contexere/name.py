@@ -31,7 +31,9 @@ def parse_args(args):
         version=f"contexere {__version__}",
     )
     parser.add_argument(dest="path",
-                        help="Path to folder with research artefacts (default: current working dir)", type=Path,
+                        help="Path to folder with research artefacts (default: current working dir)",
+                        nargs='?',
+                        type=Path,
                         default=Path.cwd())
     parser.add_argument(
         "-n",
