@@ -2,8 +2,14 @@ import datetime
 
 import pandas as pd
 import pytz
+import re
 
 from contexere import __month_dict__, __day_dict__, __hours__
+from contexere.discover import build_context, last
+
+# Define the scheme with named groups
+schematic = re.compile(r'(?P<project>[a-zA-Z]*)(?P<date>[0-9]{2}[o-z][1-9A-V])(?P<step>[a-z]*)')
+
 
 def abbreviate_date(date=None, tz=pytz.utc,
                     month=__month_dict__, day=__day_dict__):
@@ -65,3 +71,18 @@ def decode_abbreviated_datetime(abrv, tz=pytz.utc):
         hour = 0
         minutes = 0
     return datetime.datetime(year, month, day, hour, minutes, tzinfo=tz)
+
+
+def suggest_next(directory='.'):
+    context, timeline = build_context(directory)
+    latest = last(timeline)
+    assert len(latest) == 1
+    match = schematic.match(latest[0])
+    today = abbreviate_date()
+    if match.group('date') == today:
+        assert match.group('step') != 'z'
+        counter = chr(ord(match.group('step')) + 1)
+        suggestion = match.group('project') + match.group('date') + counter
+    else:
+        suggestion = match.group('project') + today + 'a'
+    return suggestion
