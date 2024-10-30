@@ -50,7 +50,8 @@ def parse_args(args):
         action="version",
         version=f"pyName {__version__}",
     )
-    parser.add_argument(dest="project", help="Project abbreviation (default DS)", type=str, default='DS')
+    parser.add_argument(dest="project", nargs='?',
+                        help="Project abbreviation (default DS)", type=str, default='DS')
     parser.add_argument(
         "-v",
         "--verbose",
