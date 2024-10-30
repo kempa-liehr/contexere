@@ -67,6 +67,13 @@ The general scheme is: ``DSyymd[hMM]e[_x]__title``
 - An analysis of data set `DS21o1b` started on 2nd January should be named `DS21o2a_1b`.
 - An meta analysis of `DS21o1c_a` and `DS21o2a_1b` started on 11th February should be named `DS21pBa_o1c_2a`.
 
+Installation
+============
+The module ``pyname`` can be installed with the following commands::
+
+    git clone git@github.com:kempa-liehr/pyname.git
+    cd pyname
+    pip install .
 
 Usage
 =====
