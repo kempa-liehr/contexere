@@ -75,8 +75,8 @@ def decode_abbreviated_datetime(abrv, tz=pytz.utc):
 
 def suggest_next(directory='.'):
     context, timeline = build_context(directory)
+    assert len(timeline) >= 1
     latest = last(timeline)
-    assert len(latest) == 1
     match = schematic.match(latest[0])
     today = abbreviate_date()
     if match.group('date') == today:
