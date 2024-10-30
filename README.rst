@@ -82,6 +82,7 @@ The project provides the command line tool ``name``.
     options:
       -h, --help           show this help message and exit
       --version            show program's version number and exit
+      -t, --time           add time abbreviation
       -v, --verbose        set loglevel to INFO
       -vv, --very-verbose  set loglevel to DEBUG
 
@@ -90,9 +91,14 @@ Calling the tool without any arguments return the date abbreviation assuming the
     name
     DS24xUa
 
-A different project name can be provided as argument of name:
+A different project name can be provided as argument of ``name``:
     name myProject
     myProject24xUa
+
+The arguments ``-t`` or ``--time`` can be used to create a time-sensitive artefact name, which might be useful if
+time-series windows need unique labels for systematic time-series feature engineering:
+    name --time
+    DS24xUi54
 
 References
 ==========
