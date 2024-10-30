@@ -1,6 +1,6 @@
 
 ======
-pyName
+contexere
 ======
 
 Naming convention for research artefacts
@@ -69,10 +69,10 @@ The general scheme is: ``DSyymd[hMM]e[_x]__title``
 
 Installation
 ============
-The module ``pyname`` can be installed with the following commands::
+The module ``contexere`` can be installed with the following commands::
 
-    git clone git@github.com:kempa-liehr/pyname.git
-    cd pyname
+    git clone git@github.com:kempa-liehr/contexere.git
+    cd contexere
     pip install .
 
 Usage

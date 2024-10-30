@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 import pytz
 
-from pyname import __month_dict__, __day_dict__, __hours__
+from contexere import __month_dict__, __day_dict__, __hours__
 
 def abbreviate_date(date=None, tz=pytz.utc,
                     month=__month_dict__, day=__day_dict__):

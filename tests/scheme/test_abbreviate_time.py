@@ -1,7 +1,7 @@
 from datetime import datetime
 import pytz
 
-from pyname.scheme import abbreviate_time
+from contexere.scheme import abbreviate_time
 
 def test_midnight():
     dt = datetime(2022, 1, 1, 0, 0)
