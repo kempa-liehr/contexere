@@ -15,9 +15,9 @@ Scientists and engineer create a multitude of digital artefacts during their dai
     - figures,
     - tables, etc
 
-In order to trace and track these multiple interconnected research artefacts, hierarchical naming scheme are a powerful
-tool to document the connection between research artefacts, find previous research outputs, and push the overall
-methodology towards reproducible research [1].
+In order to trace and track these multiple interconnected research artefacts, hierarchical naming schemes
+are a powerful tool to document the connection between research artefacts, find previous research outputs, and enable
+reproducible research [1].
 
 The following naming scheme has evolved over several years to track research artefacts of all kinds.
 
