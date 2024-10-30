@@ -3,17 +3,16 @@ import datetime
 import pandas as pd
 import pytz
 
-def abbreviate_date(date=None, tz=pytz.utc):
+from pyname import __month_dict__, __day_dict__
+
+def abbreviate_date(date=None, tz=pytz.utc,
+                    month=__month_dict__, day=__day_dict__):
     if date is None:
         date = datetime.datetime.now(tz=tz)
     elif type(date) == str:
         date = pd.Timestamp(date)
     year = date.strftime('%y')
-    month = dict([(m, abbr) for m, abbr in zip(range(1, 13),
-                                               map(chr, range(ord('o'), ord('z') + 1))
-                                               )])
-    days = list(map(str, range(1, 10))) + list(map(chr, range(ord('A'), ord('V') + 1)))
-    day = dict([(d, abbr) for d, abbr in zip(range(1, 32), days)])
+
     return year + month[date.month] + day[date.day]
 
 
