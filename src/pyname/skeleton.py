@@ -87,7 +87,7 @@ def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     _logger.debug("Starting crazy calculations...")
-    print(args.project + abbreviate_date())
+    print(args.project + abbreviate_date() +'a')
     _logger.info("Script ends here")
 
 
