@@ -68,6 +68,32 @@ The general scheme is: ``DSyymd[hMM]e[_x]__title``
 - An meta analysis of `DS21o1c_a` and `DS21o2a_1b` started on 11th February should be named `DS21pBa_o1c_2a`.
 
 
+Usage
+=====
+The project provides the command line tool ``name``.
+
+    usage: name [-h] [--version] [-v] [-vv] [project]
+
+    Suggest name for research artefact
+
+    positional arguments:
+      project              Project abbreviation (default DS)
+
+    options:
+      -h, --help           show this help message and exit
+      --version            show program's version number and exit
+      -v, --verbose        set loglevel to INFO
+      -vv, --very-verbose  set loglevel to DEBUG
+
+
+Calling the tool without any arguments return the date abbreviation assuming the default project name ``DS``:
+    name
+    DS24xUa
+
+A different project name can be provided as argument of name:
+    name myProject
+    myProject24xUa
+
 References
 ==========
 
