@@ -106,7 +106,7 @@ Adding the option ``--time`` also abbreviates the actual time::
     name --time
     24xVj36
 
-In an empty folder, a name file is suggested by specifying a project abbreviation and the ``--next`` option::
+In an empty folder, a file name is suggested by specifying a project abbreviation and the ``--next`` option::
 
     mkdir test_folder
     cd test_folder
