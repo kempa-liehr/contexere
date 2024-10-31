@@ -89,7 +89,7 @@ def suggest_next(directory='.', project=None):
         latest = last(timeline)
         match = schematic.match(latest[0])
         this_project = match.group('project')
-        if today == match.group('project'):
+        if today == match.group('date'):
             assert match.group('step') != 'z'
             next_step = chr(ord(match.group('step')) + 1)
         else:
