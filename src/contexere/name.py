@@ -5,7 +5,7 @@ import sys
 
 from contexere import __version__
 from contexere.discover import summary
-from contexere.scheme import abbreviate_time, suggest_next
+from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
 __copyright__ = "Andreas W. Kempa-Liehr"
@@ -102,12 +102,14 @@ def main(args):
     _logger.debug("Start building context...")
     if args.summary:
         summary(args.path)
-    if args.next:
+    elif args.next:
         print(suggest_next(args.path, project=args.project))
-    if args.time:
-        ending = abbreviate_time()
     else:
-        ending = 'a'
+        output = abbreviate_date()
+        if args.time:
+            output += abbreviate_time()
+        print(output)
+
     # print(args.project + abbreviate_date() + ending)
     _logger.info("Script ends here")
 
