@@ -43,6 +43,15 @@ def parse_args(args):
         action="store_true"
     )
     parser.add_argument(
+        "-p",
+        "--project",
+        dest="project",
+        type=str,
+        default=None,
+        help="Specify project abbreviation",
+        action="store"
+    )
+    parser.add_argument(
         "-s",
         "--summary",
         dest="summary",
@@ -94,12 +103,7 @@ def main(args):
     if args.summary:
         summary(args.path)
     if args.next:
-        try:
-            print(suggest_next(args.path))
-        except AssertionError:
-            print(f"The folder '{args.path}' does not have any files matching the naming scheme. "
-                  "Use the '--project' argument to provide a project abbreviation.")
-            sys.exit(1)
+        print(suggest_next(args.path, project=args.project))
     if args.time:
         ending = abbreviate_time()
     else:

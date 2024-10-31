@@ -1,5 +1,5 @@
 import datetime
-
+import logging
 import pandas as pd
 import pytz
 import re
@@ -73,16 +73,26 @@ def decode_abbreviated_datetime(abrv, tz=pytz.utc):
     return datetime.datetime(year, month, day, hour, minutes, tzinfo=tz)
 
 
-def suggest_next(directory='.'):
-    context, timeline = build_context(directory)
-    assert len(timeline) >= 1
-    latest = last(timeline)
-    match = schematic.match(latest[0])
+def suggest_next(directory='.', project=None):
+    context, timeline = build_context(directory, project_filter=project)
+    logging.info('Projects' + str(list(context.keys())))
+    logging.info('Timeline' + str(list(timeline.keys())))
     today = abbreviate_date()
-    if match.group('date') == today:
-        assert match.group('step') != 'z'
-        counter = chr(ord(match.group('step')) + 1)
-        suggestion = match.group('project') + match.group('date') + counter
+    if len(timeline) == 0:
+        if project is None:
+            raise ValueError(f"No project files matching the naming scheme found in path {directory}"
+                             "and option '--project' wasn't set.")
+        else:
+            this_project = project
+            next_step = 'a'
     else:
-        suggestion = match.group('project') + today + 'a'
+        latest = last(timeline)
+        match = schematic.match(latest[0])
+        this_project = match.group('project')
+        if today == match.group('project'):
+            assert match.group('step') != 'z'
+            next_step = chr(ord(match.group('step')) + 1)
+        else:
+            next_step = 'a'
+    suggestion = this_project + today + next_step
     return suggestion
