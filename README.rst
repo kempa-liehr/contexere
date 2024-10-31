@@ -75,39 +75,50 @@ The module ``contexere`` can be installed from PyPi::
 
 Usage
 =====
-The project provides the command line tool ``name``.
+The project provides the command line tool ``name``::
 
-    usage: name [-h] [--version] [-v] [-vv] [project]
+    usage: name [-h] [--version] [-n] [-p PROJECT] [-s] [-t] [-v] [-vv] [path]
 
     Suggest name for research artefact
-
+    
     positional arguments:
-      project              Project abbreviation (default DS)
-
+      path                  Path to folder with research artefacts (default:
+                            current working dir)
+    
     options:
-      -h, --help           show this help message and exit
-      --version            show program's version number and exit
-      -t, --time           add time abbreviation
-      -v, --verbose        set loglevel to INFO
-      -vv, --very-verbose  set loglevel to DEBUG
+      -h, --help            show this help message and exit
+      --version             show program's version number and exit
+      -n, --next            Suggest next artefact name
+      -p PROJECT, --project PROJECT
+                            Specify project abbreviation
+      -s, --summary         Sumarize files following the naming convention
+      -t, --time            add time abbreviation
+      -v, --verbose         set loglevel to INFO
+      -vv, --very-verbose   set loglevel to DEBUG
 
-
-Calling the tool without any arguments return the date abbreviation assuming the default project name ``DS``::
+Calling the tool without any arguments returns the date abbreviation of today::
 
     name
-    DS24xUa
+    24xV
 
-A different project name can be provided as argument of ``name``::
-
-    name myProject
-    myProject24xUa
-
-The arguments ``-t`` or ``--time`` can be used to create a time-sensitive artefact name, which might be useful if
-time-series windows need unique labels for systematic time-series feature engineering::
+Adding the option ``--time`` also abbreviates the actual time::
 
     name --time
-    DS24xUi54
+    24xVj36
 
+In an empty folder, a name file is suggested by specifying a project abbreviation and the ``--next`` option::
+
+    mkdir test_folder
+    cd test_folder
+    name --project DS --next
+    DS24xVa
+
+After the creation of the first file, only the ``--next`` option needs to be provided to get another file name suggestion::
+
+    touch DS24xVa__test.dat
+    name --next
+    DS24xVb
+    
 References
 ==========
 
