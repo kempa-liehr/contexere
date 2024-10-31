@@ -2,6 +2,7 @@
 Discover files following the naming convention
 """
 
+import logging
 import pandas as pd
 from pathlib import Path
 import re
@@ -11,12 +12,13 @@ pattern = re.compile(r'(?P<project>[a-zA-Z]*)(?P<date>[0-9]{2}[o-z][1-9A-V])(?P<
 
 
 # Function to group files by common project and date
-def build_context(directory='.'):
+def build_context(directory='.', project_filter=None):
     context = dict()
     timeline = dict()
 
     # Iterate over files and directories in the specified folder
     for path in Path(directory).iterdir():
+        print(path.name)
         if path.is_file():
             match = pattern.match(path.name)
             if match:
@@ -31,11 +33,11 @@ def build_context(directory='.'):
                     timeline[date + step] = dict()
                 if not project in timeline[date + step]:
                     timeline[date + step][project] = list()
-
-                context[project][(date, step)].append(path)
-                timeline[date + step][project].append(path)
+                if project_filter is None or project_filter == project:
+                    context[project][(date, step)].append(path)
+                    timeline[date + step][project].append(path)
     return context, timeline
-
+    
 def last(timeline):
     events = list(timeline.keys())
     events.sort()
