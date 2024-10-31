@@ -18,22 +18,21 @@ def build_context(directory='.', project_filter=None):
 
     # Iterate over files and directories in the specified folder
     for path in Path(directory).iterdir():
-        print(path.name)
         if path.is_file():
             match = pattern.match(path.name)
             if match:
                 project = match.group('project')
                 date = match.group('date')
                 step = match.group('step')
-                if not project in context:
-                    context[project] = dict()
-                if not (date, step) in context[project]:
-                    context[project][(date, step)] = list()
-                if not (date + step) in timeline:
-                    timeline[date + step] = dict()
-                if not project in timeline[date + step]:
-                    timeline[date + step][project] = list()
-                if project_filter is None or project_filter == project:
+                if project_filter is None or project == project_filter:
+                    if not project in context:
+                        context[project] = dict()
+                    if not (date, step) in context[project]:
+                        context[project][(date, step)] = list()
+                    if not (date + step) in timeline:
+                        timeline[date + step] = dict()
+                    if not project in timeline[date + step]:
+                        timeline[date + step][project] = list()
                     context[project][(date, step)].append(path)
                     timeline[date + step][project].append(path)
     return context, timeline
