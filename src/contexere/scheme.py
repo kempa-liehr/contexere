@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 import pytz
 import re
+from tzlocal import get_localzone
 
 from contexere import __month_dict__, __day_dict__, __hours__
 from contexere.discover import build_context, last
@@ -11,10 +12,13 @@ from contexere.discover import build_context, last
 schematic = re.compile(r'(?P<project>[a-zA-Z]*)(?P<date>[0-9]{2}[o-z][1-9A-V])(?P<step>[a-z]*)')
 
 
-def abbreviate_date(date=None, tz=pytz.utc,
+def abbreviate_date(date=None, tz=pytz.utc, local=False,
                     month=__month_dict__, day=__day_dict__):
     if date is None:
-        date = datetime.datetime.now(tz=tz)
+        if local:
+            date = datetime.datetime.now(tz=get_localzone())
+        else:
+            date = datetime.datetime.now(tz=tz)
     elif type(date) == str:
         date = pd.Timestamp(date)
     year = date.strftime('%y')
