@@ -93,6 +93,7 @@ The project provides the command line tool ``name``::
                             Specify project abbreviation
       -s, --summary         Sumarize files following the naming convention
       -t, --time            add time abbreviation
+      -u, --utc             Generate timestamp with respect to UTC (default is local timezone)
       -v, --verbose         set loglevel to INFO
       -vv, --very-verbose   set loglevel to DEBUG
 
