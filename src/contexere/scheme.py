@@ -40,10 +40,12 @@ def abbreviate_time(date=None, seconds=False, tz=pytz.utc,  local=False, hour=__
     return abbr
 
 
-def abbreviate_datetime(date=None, seconds=False, tz=pytz.utc):
+def abbreviate_datetime(date=None, seconds=False, tz=pytz.utc, local=False):
     if date is None:
         date = datetime.datetime.now(tz=tz)
-    return abbreviate_date(date) + abbreviate_time(date, seconds=seconds)
+    return abbreviate_date(date, local=local) + abbreviate_time(date,
+                                                                seconds=seconds,
+                                                                local=local)
 
 
 def decode_abbreviated_datetime(abrv, tz=pytz.utc):
