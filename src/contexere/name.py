@@ -64,6 +64,13 @@ def parse_args(args):
         dest="time",
         help="add time abbreviation",
         action="store_true"
+    )  
+    parser.add_argument(
+        "-u",
+        "--utc",
+        dest="utc",
+        help="Generate timestamp with respect to UTC (default is local timezone)",
+        action="store_true"
     )
     parser.add_argument(
         "-v",
@@ -103,11 +110,11 @@ def main(args):
     if args.summary:
         summary(args.path)
     elif args.next:
-        print(suggest_next(args.path, project=args.project))
+        print(suggest_next(args.path, project=args.project, local=~args.utc))
     else:
-        output = abbreviate_date()
+        output = abbreviate_date(local=~args.utc)
         if args.time:
-            output += abbreviate_time()
+            output += abbreviate_time(local=~args.utc)
         print(output)
 
     # print(args.project + abbreviate_date() + ending)
