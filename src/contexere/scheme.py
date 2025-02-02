@@ -26,9 +26,12 @@ def abbreviate_date(date=None, tz=pytz.utc, local=False,
     return year + month[date.month] + day[date.day]
 
 
-def abbreviate_time(date=None, seconds=False, tz=pytz.utc, hour=__hours__):
+def abbreviate_time(date=None, seconds=False, tz=pytz.utc,  local=False, hour=__hours__):
     if date is None:
-        date = datetime.datetime.now(tz=tz)
+        if local:
+            date = datetime.datetime.now(tz=get_localzone())
+        else:
+            date = datetime.datetime.now(tz=tz)
     elif type(date) == str:
         date = pd.Timestamp(date)
     abbr = hour[date.hour] + '{:02}'.format(date.minute)
@@ -77,11 +80,11 @@ def decode_abbreviated_datetime(abrv, tz=pytz.utc):
     return datetime.datetime(year, month, day, hour, minutes, tzinfo=tz)
 
 
-def suggest_next(directory='.', project=None):
+def suggest_next(directory='.', project=None, local=True):
     context, timeline = build_context(directory, project_filter=project)
     logging.info('Projects' + str(list(context.keys())))
     logging.info('Timeline' + str(list(timeline.keys())))
-    today = abbreviate_date()
+    today = abbreviate_date(local=local)
     if len(timeline) == 0:
         if project is None:
             raise ValueError(f"No project files matching the naming scheme found in path {directory}"
