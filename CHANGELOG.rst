@@ -2,9 +2,9 @@
 Changelog
 =========
 
-Version 0.1
-===========
+Version 4.4.1
+=============
 
-- Feature A added
-- FIX: nasty bug #1729 fixed
-- add your changes here!
+- Get timestamp indicating start of next month
+- Add option to abbreviate timestamps with respect to local time instead of UTC
+
