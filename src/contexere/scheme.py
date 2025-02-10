@@ -105,3 +105,31 @@ def suggest_next(directory='.', project=None, local=True):
             next_step = 'a'
     suggestion = this_project + today + next_step
     return suggestion
+
+def next_month(this_year, this_month, datetime=True):
+    """
+    Return abbreviation for next month.
+
+    This function is useful if data were collected for a specific month and
+    the timestamp is supposed to indicate the end of the period.
+
+    Args:
+        this_year: Year of data collection
+        this_month: Month of data collection
+        datetime: Boolean indicating if timestamp is generated with time (default: True) or without
+
+    Returns:
+        String with abbreviated timestamp
+    """
+    assert this_month >= 1 and this_month <= 12
+    if this_month <= 11:
+        month = this_month + 1
+        year = this_year
+    else:
+        month = 1
+        year = this_year + 1
+    t = pd.Timestamp(year=year, month=month, day=1, hour=0, minute=0)
+    if datetime:
+        return abbreviate_datetime(t)
+    else:
+        return abbreviate_date(t)
