@@ -106,9 +106,9 @@ def suggest_next(directory='.', project=None, local=True):
     suggestion = this_project + today + next_step
     return suggestion
 
-def next_month(this_year, this_month, datetime=True):
+def next_month_start(this_year, this_month, datetime=True):
     """
-    Return abbreviation for next month.
+    Return abbreviation for the start of next month.
 
     This function is useful if data were collected for a specific month and
     the timestamp is supposed to indicate the end of the period.
