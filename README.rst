@@ -119,6 +119,9 @@ After the creation of the first file, only the ``--next`` option needs to be pro
     touch DS24xVa__test.dat
     name --next
     DS24xVb
+
+Let's assume that ``DS24xVb`` is the name of a Jupyter notebook, which analyses results created by ``DS24xVa.py``. You can reflect this relation by actually naming the notebook ``DS24xVb_xVa__anlysis.ipynb`` to reflect its relation to ``DS24xVa.py``. However, simplifying the name by removing redundant elements of the reference ``DS24xVb_a__anlysis.ipynb`` is even more efficient.
+
     
 References
 ==========
