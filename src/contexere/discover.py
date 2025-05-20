@@ -5,10 +5,8 @@ Discover files following the naming convention
 import logging
 import pandas as pd
 from pathlib import Path
-import re
 
-# Define the scheme with named groups
-pattern = re.compile(r'(?P<project>[a-zA-Z]*)(?P<date>[0-9]{2}[o-z][1-9A-V])(?P<step>[a-z]*)_')
+from contexere import __pattern__ as pattern
 
 
 # Function to group files by common project and date
