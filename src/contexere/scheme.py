@@ -6,10 +6,8 @@ import re
 from tzlocal import get_localzone
 
 from contexere import __month_dict__, __day_dict__, __hours__
+from contexere import __pattern__ as schematic
 from contexere.discover import build_context, last
-
-# Define the scheme with named groups
-schematic = re.compile(r'(?P<project>[a-zA-Z]*)(?P<date>[0-9]{2}[o-z][1-9A-V])(?P<step>[a-z]*)')
 
 
 def abbreviate_date(date=None, tz=pytz.utc, local=False,
