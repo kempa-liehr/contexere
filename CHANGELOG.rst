@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 4.5
+===========
+- Fix regular expression make trailing underscore optional
+- Except directories as artefacts
+- CLI assumes local time zone as default
+
 Version 4.4.1
 =============
 
