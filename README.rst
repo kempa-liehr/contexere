@@ -6,7 +6,7 @@ contexere
 Naming convention for research artefacts
 ----------------------------------------
 
-Scientists and engineer create a multitude of digital artefacts during their daily work:
+Scientists and engineers create a multitude of digital artefacts during their daily work:
     - experimental results,
     - simulation results,
     - literate programming notebooks analysing experiments and simulations
@@ -16,10 +16,9 @@ Scientists and engineer create a multitude of digital artefacts during their dai
     - tables, etc
 
 In order to trace and track these multiple interconnected research artefacts, hierarchical naming schemes
-are a powerful tool to document the connection between research artefacts, find previous research outputs, and enable
-reproducible research [1].
+are a powerful tool to document the connection between research artefacts, find previous research outputs, and enable reproducible research [1].
 
-The following naming scheme has evolved over several years to track research artefacts of all kinds.
+The following naming scheme has evolved over several years to track research artefacts of all kinds:
 
 The general scheme is: ``DSyymd[hMM]e[_x]__title``
 
