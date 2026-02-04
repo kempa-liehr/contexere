@@ -2,9 +2,9 @@
 Discover files following the naming convention
 """
 
-import logging
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
 
 from contexere import __pattern__ as pattern
 
@@ -22,37 +22,57 @@ def build_context(directory='.', project_filter=None):
             date = match.group('date')
             step = match.group('step')
             if project_filter is None or project == project_filter:
-                if not project in context:
-                    context[project] = dict()
-                if not (date, step) in context[project]:
-                    context[project][(date, step)] = list()
-                if not (date + step) in timeline:
-                    timeline[date + step] = dict()
-                if not project in timeline[date + step]:
-                    timeline[date + step][project] = list()
-                context[project][(date, step)].append(path)
-                timeline[date + step][project].append(path)
+                grow_context(context, date, path, project, step)
+                extend_timeline(timeline, date, path, project, step)
     return context, timeline
-    
-def last(timeline):
-    events = list(timeline.keys())
-    events.sort()
-    latest = events[-1]
-    return [project + latest for project in timeline[latest]]
 
-def summary(directory='.'):
-    context, timeline = build_context(directory)
-    summary = pd.Series({project: len(context[project])
-                         for project in context}).sort_values(ascending=False)
 
-    if len(summary) == 0:
+def extend_timeline(timeline, date, path, project, step):
+    if not date in timeline:
+        timeline[date] = dict()
+    if not project in timeline[date]:
+        timeline[date][project] = dict()
+    if not step in timeline[date][project]:
+        timeline[date][project][step] = list()
+    timeline[date][project][step].append(path)
+
+
+def grow_context(context, date, path, project, step):
+    if not project in context:
+        context[project] = dict()
+    if not date in context[project]:
+        context[project][date] = dict()
+    if not step in context[project][date]:
+        context[project][date][step] = list()
+    context[project][date][step].append(path)
+
+
+def summary(directory='.', buffered_context=None):
+    if buffered_context is None:
+        context, _ = build_context(directory)
+    else:
+        context = buffered_context
+    summary_dict = dict()
+    for project, dates_dict in context.items():
+        last_date = max(dates_dict.keys())
+        last_step = max(dates_dict[last_date].keys())
+        unique_rai = 0
+        total_project_files = 0
+        for steps_dict in dates_dict.values():
+            unique_rai += 1
+            total_project_files += sum([len(file_list) for file_list in steps_dict.values()])
+
+        summary_dict[project] = pd.Series({'RAI': unique_rai,
+                                           'Files': total_project_files,
+                                           'Latest': last_date + last_step})
+    summary_df = pd.DataFrame(summary_dict).transpose()
+    summary_df.columns.name = 'Project'
+    summary_df.sort_values(by=['Latest'], ascending=False, inplace=True)
+
+    if len(summary_df) == 0:
         raise ValueError('No context found in folder "{}".'.format(str(directory)))
-    tail = last(timeline)
-    artefacts = 'artefact' if len(tail) == 1 else 'artefacts'
+    return summary_df
 
-    print(f"Summary of {'artefact' if len(summary) == 1 else 'artefacts'}:")
-    print(summary)
-    print(f"Last {'artefact' if len(tail) == 1 else 'artefacts'}: ", ', '.join(tail))
 
 if __name__ == "__main__":
     summary()
