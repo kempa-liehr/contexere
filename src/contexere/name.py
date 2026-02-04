@@ -3,6 +3,8 @@ import logging
 from pathlib import Path
 import sys
 
+import contexere.analytics
+import contexere.discover
 from contexere import __version__
 from contexere.discover import summary
 from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
@@ -108,7 +110,7 @@ def main(args):
     setup_logging(args.loglevel)
     _logger.debug("Start building context...")
     if args.summary:
-        summary(args.path)
+        print(summary(args.path))
     elif args.next:
         print(suggest_next(args.path, project=args.project, local=~args.utc))
     else:

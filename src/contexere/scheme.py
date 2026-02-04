@@ -7,7 +7,8 @@ from tzlocal import get_localzone
 
 from contexere import __month_dict__, __day_dict__, __hours__
 from contexere import __pattern__ as schematic
-from contexere.discover import build_context, last
+from contexere.discover import build_context, summary
+from contexere.analytics import last
 
 
 def abbreviate_date(date=None, tz=pytz.utc, local=False,
@@ -85,7 +86,7 @@ def suggest_next(directory='.', project=None, local=True):
     logging.info('Projects' + str(list(context.keys())))
     logging.info('Timeline' + str(list(timeline.keys())))
     today = abbreviate_date(local=local)
-    if len(timeline) == 0:
+    if len(context) == 0:
         if project is None:
             raise ValueError(f"No project files matching the naming scheme found in path {directory}"
                              "and option '--project' wasn't set.")
@@ -94,7 +95,16 @@ def suggest_next(directory='.', project=None, local=True):
             next_step = 'a'
     else:
         latest = last(timeline)
-        match = schematic.match(latest[0])
+        if len(latest) == 1:
+            match = schematic.match(latest[0])
+        else:
+            summary_df = summary(buffered_context=context)
+            if project is None:
+                summary_df.sort_values(by=['RAI'], ascending=False, inplace=True)
+                match = schematic.match(summary_df.index[0] + summary_df['Latest'].iloc[0])
+                logging.info("Continuing from latest RAI.")
+            else:
+                match = schematic.match(project + summary_df.loc[project, 'Latest'].iloc[0])
         this_project = match.group('project')
         if today == match.group('date'):
             assert match.group('step') != 'z'
