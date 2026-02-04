@@ -1,15 +1,15 @@
 from pathlib import Path
-from contexere.discover import grow_context
+from contexere.discover import extend_timeline
 
-def test_grow_context_empty_dict():
-    context = dict()
-    grow_context(context, 'test', '26p4', 'a', Path.home())
-    assert context['test']['26p4']['a'] == [Path.home()]
+def test_extend_timeline_empty_dict():
+    timeline = dict()
+    extend_timeline(timeline, '26p4', 'test', 'a', Path.home())
+    assert timeline['26p4']['test']['a'] == [Path.home()]
 
-    grow_context(context, 'test', '26p4', 'a', Path.home())
-    assert context['test']['26p4']['a'] == [Path.home(), Path.home()]
+    extend_timeline(timeline, '26p4', 'test', 'a', Path.home())
+    assert timeline['26p4']['test']['a'] == [Path.home(), Path.home()]
 
-    grow_context(context, 'test', '26p4', 'b', Path.home())
-    assert context['test']['26p4']['b'] == [Path.home()]
+    extend_timeline(timeline, '26p4', 'test', 'b', Path.home())
+    assert timeline['26p4']['test']['b'] == [Path.home()]
 
 
