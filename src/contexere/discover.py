@@ -22,7 +22,7 @@ def build_context(directory='.', project_filter=None):
             date = match.group('date')
             step = match.group('step')
             if project_filter is None or project == project_filter:
-                grow_context(context, date, path, project, step)
+                grow_context(context, project, date, step, path)
                 extend_timeline(timeline, date, path, project, step)
     return context, timeline
 
@@ -37,7 +37,26 @@ def extend_timeline(timeline, date, path, project, step):
     timeline[date][project][step].append(path)
 
 
-def grow_context(context, date, path, project, step):
+def grow_context(context: dict[str, dict[str, dict[str, list[Path]]]],
+                 project: str,
+                 date: str,
+                 step: str,
+                 path: Path):
+    """
+    Add file to context dictionary.
+
+    Append the path of a research artefact identified by its `project`, `date`, and `step` to the `context` dictionary.
+
+    Args:
+        context: Context dictionary to be appended with path to research artefact.
+        project: Project identifier
+        date: Date abbreviation
+        step: Lower case characters counting the research artefacts for a specific `date`
+        path: Path to the research artefact
+
+    Returns:
+        None
+    """
     if not project in context:
         context[project] = dict()
     if not date in context[project]:
