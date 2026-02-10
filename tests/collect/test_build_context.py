@@ -53,3 +53,14 @@ def test_three_related_files_different_projects(temp_dir):
     assert set(timeline['26pA']['ERP']['a']) == set([temp_dir / 'ERP26pAa_data.csv',
                                                     temp_dir / 'ERP26pAa_example.txt'])
     assert timeline['26pB'] == {'ERQ': {'a': [temp_dir / 'ERQ26pBa_example.txt']}}
+
+
+def test_three_related_files_with_project_filter(temp_dir):
+    fill_folder(temp_dir, 'ERP26pAa_example.txt', 'ERQ26pBa_example.txt', 'ERP26pAa_data.csv')
+    context, timeline = build_context(temp_dir, project_filter='ERP')
+    assert set(context['ERP']['26pA']['a']) == set([temp_dir / 'ERP26pAa_data.csv',
+                                                   temp_dir / 'ERP26pAa_example.txt'])
+    assert 'ERQ' not in context
+    assert set(timeline['26pA']['ERP']['a']) == set([temp_dir / 'ERP26pAa_data.csv',
+                                                    temp_dir / 'ERP26pAa_example.txt'])
+    assert '26pB' not in timeline
