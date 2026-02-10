@@ -81,8 +81,8 @@ def decode_abbreviated_datetime(abrv, tz=pytz.utc):
     return datetime.datetime(year, month, day, hour, minutes, tzinfo=tz)
 
 
-def suggest_next(directory='.', project=None, local=True):
-    context, timeline = build_context(directory, project_filter=project)
+def suggest_next(directory='.', project='', local=True, recursive=False):
+    context, timeline = build_context(directory, project_filter=project, recursive=recursive)
     logging.info('Projects' + str(list(context.keys())))
     logging.info('Timeline' + str(list(timeline.keys())))
     today = abbreviate_date(local=local)
