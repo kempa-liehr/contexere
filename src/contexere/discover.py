@@ -95,13 +95,13 @@ def summary(directory='.', buffered_context=None):
     for project, dates_dict in context.items():
         last_date = max(dates_dict.keys())
         last_step = max(dates_dict[last_date].keys())
-        unique_rai = 0
+        unique_ragi = 0
         total_project_files = 0
         for steps_dict in dates_dict.values():
-            unique_rai += 1
+            unique_ragi += 1
             total_project_files += sum([len(file_list) for file_list in steps_dict.values()])
 
-        summary_dict[project] = pd.Series({'RAI': unique_rai,
+        summary_dict[project] = pd.Series({'RAGs': unique_ragi,
                                            'Files': total_project_files,
                                            'Latest': last_date + last_step})
     summary_df = pd.DataFrame(summary_dict).transpose()
