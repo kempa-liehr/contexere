@@ -1,5 +1,5 @@
 from pathlib import Path
-from contexere.discover import extend_timeline
+from contexere.collect import extend_timeline
 
 def test_extend_timeline_empty_dict():
     timeline = dict()

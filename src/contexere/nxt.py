@@ -4,9 +4,9 @@ from pathlib import Path
 import sys
 
 import contexere.analytics
-import contexere.discover
+import contexere.collect
 from contexere import __version__
-from contexere.discover import summary
+from contexere.collect import summary
 from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
