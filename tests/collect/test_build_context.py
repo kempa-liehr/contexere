@@ -1,4 +1,3 @@
-from pathlib import Path
 import pytest
 
 from contexere.collect import build_context
@@ -9,7 +8,6 @@ def temp_dir(tmp_path_factory):
     return base
 
 def fill_folder(path, *files):
-    print(type(temp_dir), temp_dir)
     for fn in files:
         (path / fn).write_text("x", encoding="utf-8")
 def test_empty_directory(temp_dir):
