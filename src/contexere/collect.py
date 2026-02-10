@@ -101,9 +101,23 @@ def grow_context(context: dict[str, dict[str, dict[str, list[Path]]]],
     context[project][date][step].append(path)
 
 
-def summary(directory='.', buffered_context=None):
+def summary(directory='.', buffered_context=None, project_filter='', recursive=False):
+    """
+    Summarise context as pandas.DataFrame with columns 'RAGs, 'Files', 'Latest' and index given by project identifiers.
+    The rows are sorted according to column 'Latest'.
+
+    Args:
+        directory: Folder to search for research artefacts (default='.')
+        buffered_context: context_dictionary, which already has been collected (default=None)
+        project_filter: Starting letters of project identifier
+                        (default='' finds all files following the naming convention)
+        recursive: Traverse directory tree recursively (default=False)
+
+    Returns:
+        pd.DataFrame with columns 'RAGs', 'Files', 'Latest' and index given by project identifiers.
+    """
     if buffered_context is None:
-        context, _ = build_context(directory)
+        context, _ = build_context(directory, project_filter, recursive)
     else:
         context = buffered_context
     summary_dict = dict()
@@ -121,10 +135,11 @@ def summary(directory='.', buffered_context=None):
                                            'Latest': last_date + last_step})
     summary_df = pd.DataFrame(summary_dict).transpose()
     summary_df.columns.name = 'Project'
-    summary_df.sort_values(by=['Latest'], ascending=False, inplace=True)
 
     if len(summary_df) == 0:
         raise ValueError('No context found in folder "{}".'.format(str(directory)))
+    else:
+        summary_df.sort_values(by=['Latest'], ascending=False, inplace=True)
     return summary_df
 
 

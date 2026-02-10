@@ -54,10 +54,17 @@ def parse_args(args):
         action="store"
     )
     parser.add_argument(
+        "-r",
+        "--recursive",
+        dest="recursive",
+        help="Use files from diretory tree",
+        action="store_true"
+    )
+    parser.add_argument(
         "-s",
         "--summary",
         dest="summary",
-        help="Sumarize files following the naming convention",
+        help="Summarise files following the naming convention",
         action="store_true"
     )
     parser.add_argument(
@@ -110,7 +117,10 @@ def main(args):
     setup_logging(args.loglevel)
     _logger.debug("Start building context...")
     if args.summary:
-        print(summary(args.path))
+        try:
+            print(summary(args.path, recursive=args.recursive))
+        except ValueError as error:
+            _logger.warning(error)
     elif args.next:
         print(suggest_next(args.path, project=args.project, local=~args.utc))
     else:
