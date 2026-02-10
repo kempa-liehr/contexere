@@ -1,5 +1,5 @@
 from pathlib import Path
-from contexere.discover import grow_context
+from contexere.collect import grow_context
 
 def test_grow_context_empty_dict():
     context = dict()
