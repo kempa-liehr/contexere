@@ -38,18 +38,11 @@ def parse_args(args):
                         type=Path,
                         default=Path.cwd())
     parser.add_argument(
-        "-n",
-        "--next",
-        dest="next",
-        help="Suggest next artefact name",
-        action="store_true"
-    )
-    parser.add_argument(
         "-p",
         "--project",
         dest="project",
         type=str,
-        default=None,
+        default='',
         help="Specify project abbreviation",
         action="store"
     )
@@ -121,10 +114,8 @@ def main(args):
             print(summary(args.path, recursive=args.recursive))
         except ValueError as error:
             _logger.warning(error)
-    elif args.next:
-        print(suggest_next(args.path, project=args.project, local=~args.utc))
     else:
-        output = abbreviate_date(local=~args.utc)
+        output = suggest_next(args.path, project=args.project, local=~args.utc, recursive=args.recursive)
         if args.time:
             output += abbreviate_time(local=~args.utc)
         print(output)
