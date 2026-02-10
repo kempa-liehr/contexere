@@ -10,12 +10,28 @@ from contexere import __pattern__ as pattern
 
 
 # Function to group files by common project and date
-def build_context(directory='.', project_filter=''):
+def build_context(directory='.', project_filter='', recursive=False):
+    """
+    Build context of grouped research artefacts over projects and time.
+
+    Args:
+        directory: Folder to search for research artefacts (default='.')
+        project_filter: Starting letters of project identifier
+                        (default='' finds all files following the naming convention)
+        recursive: Traverse directory tree recursively (default=False)
+
+    Returns:
+        (context_dict, timeline_dict)
+    """
     context = dict()
     timeline = dict()
 
+    if recursive:
+        file_iterator = Path(directory).rglob(project_filter + '*')
+    else:
+        file_iterator = Path(directory).glob(project_filter + '*')
     # Iterate over files and directories in the specified folder
-    for path in Path(directory).glob(project_filter + '*'):
+    for path in file_iterator:
         match = pattern.match(path.name)
         if match:
             project = match.group('project')
