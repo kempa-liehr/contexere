@@ -10,20 +10,19 @@ from contexere import __pattern__ as pattern
 
 
 # Function to group files by common project and date
-def build_context(directory='.', project_filter=None):
+def build_context(directory='.', project_filter=''):
     context = dict()
     timeline = dict()
 
     # Iterate over files and directories in the specified folder
-    for path in Path(directory).iterdir():
+    for path in Path(directory).glob(project_filter + '*'):
         match = pattern.match(path.name)
         if match:
             project = match.group('project')
             date = match.group('date')
             step = match.group('step')
-            if project_filter is None or project == project_filter:
-                grow_context(context, project, date, step, path)
-                extend_timeline(timeline, date, project, step, path)
+            grow_context(context, project, date, step, path)
+            extend_timeline(timeline, date, project, step, path)
     return context, timeline
 
 
