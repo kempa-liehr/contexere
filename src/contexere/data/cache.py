@@ -10,10 +10,7 @@ def init_cache(path, db):
 
 def init_researcher_table(db, user=conf.username):
     if len(db.get_researchers()) == 0:
-        stmt = insert(cdb.researcher).values(Name=user)
-        db.connect()
-        db.connection.execute(stmt)
-        result = db.connection.commit()
+        result = db.insert('Researcher', dict(Name=user))
     else:
         result = None
     return result
