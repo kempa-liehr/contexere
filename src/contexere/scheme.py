@@ -2,7 +2,6 @@ import datetime
 import logging
 import pandas as pd
 import pytz
-import re
 from tzlocal import get_localzone
 
 from contexere import __month_dict__, __day_dict__, __hours__
