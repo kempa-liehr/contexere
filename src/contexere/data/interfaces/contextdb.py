@@ -1,6 +1,6 @@
 import pandas as pd
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, MetaData, Table
-from sqlalchemy import create_engine, insert, select
+from sqlalchemy import create_engine, inspect, insert, select
 
 from contexere import conf
 
@@ -12,13 +12,13 @@ projects = Table('Project', metadata,
                  Column('Description', String(255)),
                  )
 
-projects = Table('Researcher', metadata,
+researcher = Table('Researcher', metadata,
                  Column('ID', Integer(), primary_key=True, unique=True),
                  Column('Name', String(conf.__MAX_RESEARCHER_NAME_LENGTH__), unique=True, nullable=False),
                  Column('Email', String(255)),
                  )
 
-research_artefact_groups = Table('RAGroup', metadata,
+research_artefact_groups = Table('RAG', metadata,
                                  Column('ID', String(rag_id_length), primary_key=True, unique=True,
                                         index=True, nullable=False),
                                  Column('Project', ForeignKey('Project.Name'), nullable=False),
@@ -32,24 +32,24 @@ research_knowledge_graph = Table('KnowledgeGraph', metadata,
                                  Column('Child', ForeignKey('RAG.ID'), nullable=False),
                                  )
 
-research_artefact_paths = Table('Paths', metadata,
+research_artefact_paths = Table('Path', metadata,
                                 Column('ID', Integer(), primary_key=True, nullable=False),
                                 Column('Path', String(conf.__MAX_PATH_LENGTH_BYTES__), nullable=False),
                                 )
 
-research_artefacts = Table('RArtefact', metadata,
+research_artefacts = Table('Artefact', metadata,
                            Column('RAG', ForeignKey('RAG.ID'), nullable=False),
                            Column('FileName', String(conf.__MAX_FILENAME_LENGTH_BYTES__), nullable=False),
                            Column('FileExtension', String(conf.__MAX_FILE_EXTENSION_LENGTH_BYTES__), nullable=False),
-                           Column('Path', ForeignKey('research_artefacts_path.ID'), nullable=False),
+                           Column('Path', ForeignKey('Path.ID'), nullable=False),
                            Column('IsGenerator', Boolean(), default=False),
                            )
 
-research_notes = Table('ResearchNote', metadata,
+research_notes = Table('Note', metadata,
                        Column('RAG', ForeignKey('RAG.ID'), nullable=False),
                        Column('FileName', String(conf.__MAX_FILENAME_LENGTH_BYTES__), nullable=False),
                        Column('FileExtension', String(conf.__MAX_FILE_EXTENSION_LENGTH_BYTES__), nullable=False),
-                       Column('Path', ForeignKey('research_artefacts_path.ID'), nullable=False),
+                       Column('Path', ForeignKey('Path.ID'), nullable=False),
                        Column('Quote', String(conf.__MAX_QUOTE_LENGTH__)),
                        Column('LineNr', Integer(), nullable=False),
                        )
@@ -73,8 +73,10 @@ key_value_index = Table('KeyValueIndex', metadata,
 
 
 class ContextDB:
-    def __init__(self, db_file_path=conf.__CONTEXERE_CACHE_DB__):
-        self.engine = create_engine('sqlite:////' + str(db_file_path))
+    def __init__(self, path=conf.__CONTEXERE_CACHE_DB__):
+        self.path = path
+        self.engine = create_engine('sqlite://' + str(self.path))
+        self.inspector = inspect(self.engine)
         self.connection = None
 
     def __enter__(self):
@@ -85,6 +87,14 @@ class ContextDB:
         self.connection.close()
         return True
 
+    def create_tables(self):
+        metadata.create_all(self.engine)
+
     def connect(self):
         self.connection = self.engine.connect()
         return self.connection
+
+if __name__ == '__main__':
+    db = ContextDB(path='')
+    db.create_tables()
+    print(db.inspector.get_table_names())
