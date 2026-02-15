@@ -7,6 +7,7 @@ import contexere.analytics
 import contexere.collect
 from contexere import __version__
 from contexere.collect import summary
+from contexere.data.cache import init_cache
 from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
@@ -31,6 +32,13 @@ def parse_args(args):
         "--version",
         action="version",
         version=f"contexere {__version__}",
+    )
+    parser.add_argument(
+        "-i",
+        "--init-cache",
+        dest="init_cache",
+        help="Init context cache",
+        action="store_true"
     )
     parser.add_argument(dest="path",
                         help="Path to folder with research artefacts (default: current working dir)",
@@ -109,7 +117,9 @@ def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     _logger.debug("Start building context...")
-    if args.summary:
+    if args.init_cache:
+        init_cache(args.path)
+    elif args.summary:
         try:
             print(summary(args.path, recursive=args.recursive))
         except ValueError as error:
