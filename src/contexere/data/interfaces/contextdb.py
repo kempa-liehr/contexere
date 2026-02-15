@@ -95,6 +95,13 @@ class ContextDB:
         self.connection = self.engine.connect()
         return self.connection
 
+    def read(self, stmt):
+        with self.engine.begin() as conn:
+            df = pd.read_sql_query(stmt, conn)
+        return df
+
+    def get_researchers(self):
+        return self.read(select(researcher))
 if __name__ == '__main__':
     db = ContextDB(path='')
     db.create_tables()
