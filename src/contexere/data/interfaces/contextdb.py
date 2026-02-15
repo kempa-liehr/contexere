@@ -73,7 +73,8 @@ key_value_index = Table('KeyValueIndex', metadata,
 
 
 class ContextDB:
-    def __init__(self, path=conf.__CONTEXERE_CACHE_DB__):
+    def __init__(self, metadata=metadata, path=conf.__CONTEXERE_CACHE_DB__):
+        self.metadata = metadata
         self.path = path
         self.engine = create_engine('sqlite://' + str(self.path))
         self.inspector = inspect(self.engine)
@@ -88,7 +89,7 @@ class ContextDB:
         return True
 
     def create_tables(self):
-        metadata.create_all(self.engine)
+        self.metadata.create_all(self.engine)
 
     def connect(self):
         self.connection = self.engine.connect()
