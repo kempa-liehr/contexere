@@ -8,7 +8,7 @@ def init_cache(path, db):
     fill_cache(path, db)
     return db
 
-def init_user(db, user=conf.username):
+def init_researcher_table(db, user=conf.username):
     if len(db.get_researchers()) == 0:
         stmt = insert(cdb.researcher).values(Name=user)
         db.connect()
@@ -20,10 +20,10 @@ def init_user(db, user=conf.username):
 
 def fill_cache(db, path='/'):
     db.create_tables()
-    init_user(db)
+    init_researcher_table(db)
 
 if __name__ == '__main__':
     db = cdb.ContextDB(path='')
     db.create_tables()
-    result = init_user(db)
+    result = init_researcher_table(db)
     print(db.get_researchers())
