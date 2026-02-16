@@ -111,9 +111,13 @@ class ContextDB:
             df = pd.read_sql_query(stmt, conn)
         return df
 
-    def get_researchers(self):
-        return self.read(select(researcher))
+    def select_all(self, table):
+        with self.engine.begin() as conn:
+            df = pd.read_sql_query(select(self.metadata.tables[table]), conn)
+        return df
 
+    def get_researchers(self):
+        return self.select_all('Researcher')
 
     def insert(self, table_name, data):
         """
