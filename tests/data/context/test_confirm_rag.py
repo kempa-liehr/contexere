@@ -1,4 +1,4 @@
-from contexere.data.context import confirm_rag,
+from contexere.data.context import confirm_rag
 
 def test_confirm_rag_match():
     match, project, date, step, keywords = confirm_rag('ERP26pGa')
