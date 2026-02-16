@@ -46,6 +46,7 @@ research_artefacts = Table('Artefact', metadata,
                            Column('FileExtension', String(conf.__MAX_FILE_EXTENSION_LENGTH_BYTES__), nullable=False),
                            Column('Path', ForeignKey('Path.ID'), nullable=False),
                            Column('IsGenerator', Boolean(), default=False),
+                           Column('IsDirectory', Boolean(), default=False),
                            )
 
 research_artefacts = Table('MarkupFile', metadata,

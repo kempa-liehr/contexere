@@ -1,6 +1,3 @@
-import os
-from sqlalchemy import inspect, insert
-
 from contexere import conf
 from contexere.data.context import confirm_rag, index_file_artefact, index_note_artefact
 import contexere.data.interfaces.contextdb as cdb

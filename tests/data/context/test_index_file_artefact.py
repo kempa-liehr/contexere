@@ -21,10 +21,7 @@ def fill_folder(path, *files):
 
 def test_unrelated_and_related_file(temp_dir, db):
     init_researcher_table(db, user='testuser')
-    fill_folder(temp_dir, 'notes.txt', 'ERP26pBa_9b__example__value_1.txt')
-    with open(temp_dir / 'logbook.org', 'w') as f:
-        f.write('Title\n* ERP26p9b -- Extracted note\n')
-    index_file_artefact(db, temp_dir, 'ERP', '26pB', 'a', 'example.txt')
+    index_file_artefact(db, temp_dir, 'ERP', '26pB', 'a', 'example__value_1.txt')
     tables = {table: db.select_all(table) for table in db.metadata.tables}
     print(tables)
     for table, df in tables.items():
@@ -32,6 +29,8 @@ def test_unrelated_and_related_file(temp_dir, db):
         print(df)
         if table in ['RAG', 'Keyword', 'KeywordIndex']:
             assert len(df) == 2
+        elif table in ['MarkupFile', 'Note']:
+            assert len(df) == 0
         else:
             assert len(df) == 1
         if table == 'RAG':
@@ -56,13 +55,7 @@ def test_unrelated_and_related_file(temp_dir, db):
     assert tables['Artefact'].loc[0, 'FileExtension'] == 'txt'
     assert tables['Artefact'].loc[0, 'Path'] == 1
     assert not tables['Artefact'].loc[0, 'IsGenerator']
-    assert tables['MarkupFile'].loc[0, 'Filename'] == 'logbook.org'
-    assert tables['MarkupFile'].loc[0, 'FileExtension'] == 'org'
-    assert tables['MarkupFile'].loc[0, 'Path'] == 1
-    assert tables['Note'].loc[0, 'RAG'] == 'ERP26p9b'
-    assert tables['Note'].loc[0, 'File'] == 1
-    assert tables['Note'].loc[0, 'Quote'] == '* ERP26p9b -- Extracted note'
-    assert tables['Note'].loc[0, 'LineNr'] == 1
+    assert not tables['Artefact'].loc[0, 'IsDirectory']
     assert tables['Keyword'].loc[0, 'Keyword'] == 'example'
     assert tables['Keyword'].loc[1, 'Keyword'] == 'value'
     assert tables['KeywordIndex'].loc[0, 'RAG'] == 'ERP26pBa'
