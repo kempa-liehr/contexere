@@ -1,4 +1,3 @@
-import re
 import sys
 
 if sys.version_info[:2] >= (3, 8):
@@ -24,5 +23,4 @@ __day_dict__ = dict([(d, abbr) for d, abbr in zip(range(1, 32), __days__)])
 
 __hours__ = list(map(str, range(1, 1))) + list(map(chr, range(ord('a'), ord('x') + 1)))
 
-# Define the scheme with named groups
-__pattern__ = re.compile(r'(?P<project>[a-zA-Z]*)(?P<date>[0-9]{2}[o-z][1-9A-V])(?P<step>[a-z]*)_?')
+

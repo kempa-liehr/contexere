@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from contexere import __pattern__ as pattern
+from contexere.data.context import __pattern__ as pattern
 
 
 # Function to group files by common project and date
