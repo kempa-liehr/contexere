@@ -17,6 +17,15 @@ def test_confirm_partial_rag_match_counter():
     assert date == ''
     assert step == 'a'
 
+    match, project, date, step = confirm_partial_rag('aa')
+    assert match is not None
+    assert project is None
+    assert date == ''
+    assert step == 'aa'
+
+    match, project, date, step = confirm_partial_rag('aaa')
+    assert match is None
+
 def test_confirm_partial_date_rag_match():
     match, project, date, step = confirm_partial_rag('Ga')
     assert match is not None

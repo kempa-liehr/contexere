@@ -4,7 +4,7 @@ from contexere.conf import __GENERATORS__
 
 # Define the scheme with named groups
 __pattern__ = re.compile(r'^(?P<project>[a-zA-Z]+)(?P<date>[0-9]{2}[o-z][1-9A-V])(?P<step>[a-z]+)(?:_+(?P<kwds>.+))?_*')
-__partial__ = re.compile(r'^(?P<project>[A-Za-z]+(?=\d))?(?P<date>(?:\d{2}[o-z][1-9A-V]|[o-z][1-9A-V]|[1-9A-V])?)(?P<step>[a-z]+)$')
+__partial__ = re.compile(r'^(?P<project>[A-Za-z]+(?=\d))?(?P<date>(?:\d{2}[o-z][1-9A-V]|[o-z][1-9A-V]|[1-9A-V])?)(?P<step>[a-z]{1,2})$')
 def confirm_rag(token, pattern=__pattern__):
     match = pattern.match(token)
     if match:
