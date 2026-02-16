@@ -19,7 +19,7 @@ def fill_folder(path, *files):
     for fn in files:
         (path / fn).write_text("x", encoding="utf-8")
 
-def test_file_without_dependency_known_researcher(temp_dir, db):
+def test_file_with_dependency_known_researcher(temp_dir, db):
     init_researcher_table(db, user='testuser')
     index_file_artefact(db, temp_dir / 'ERP26pBa_9b__example__value_1.txt',
                         'ERP', '26pB', 'a', '9b__example__value_1.txt', 'testuser')
