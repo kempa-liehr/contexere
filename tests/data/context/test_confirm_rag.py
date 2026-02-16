@@ -1,4 +1,4 @@
-from contexere.data.context import confirm_rag
+from contexere.data.context import confirm_rag,
 
 def test_confirm_rag_match():
     match, project, date, step, keywords = confirm_rag('ERP26pGa')
@@ -14,6 +14,14 @@ def test_confirm_rag_match():
     assert date == '26pG'
     assert step == 'a'
     assert keywords is None
+
+def test_confirm_rag_match_with_dependency():
+    match, project, date, step, remainder = confirm_rag('ERP26pGa_9a__test.ipynb')
+    assert match is not None
+    assert project == 'ERP'
+    assert date == '26pG'
+    assert step == 'a'
+    assert remainder == '9a__test.ipynb'
 
 def test_confirm_rag_match_with_keywords():
     match, project, date, step, keywords = confirm_rag('ERP26pGa_test')
