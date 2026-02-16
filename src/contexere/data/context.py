@@ -1,4 +1,6 @@
+import itertools
 import re
+from typing import Any
 
 from contexere.conf import __GENERATORS__
 
@@ -25,40 +27,81 @@ def confirm_partial_rag(token, pattern=__partial__):
     else:
         project, date, step = None, None, None
     return match, project, date, step
+
 def index_file_artefact(db, filepath, project, date, step, remainder, user):
-    project_id = db.upsert('Project', dict(Name=user))
+    project_id = db.upsert('Project', dict(Name=project))
     researcher_id = db.upsert('Researcher', dict(Name=user))
-    rag_id = db.upsert('RAG', dict(Project=project, Date=date, Enumerate=step, ResearcherID=researcher_id))
-    keywords = index_dependencies(db, rag_id, remainder)
-    path_id = db.upsert('Path', dict(Name=filepath.parents[0]))
+    rag_id = db.upsert('RAG', dict(ID=project + date + step,
+                                   Project=project, Date=date, Step=step, ResearcherID=researcher_id))
+    keywords = index_dependencies(db, rag_id, remainder, researcher_id)
+    path_id = db.upsert('Path', dict(Name=str(filepath.parents[0])))
     artefact_id = db.insert('Artefact', dict(RAG=rag_id,
-                                             Filename=filepath.name, FileExtension=filepath.suffix,
+                                             FileName=filepath.name, FileExtension=filepath.suffix,
                                              Path=path_id,
                                              IsGenerator=filepath.suffix in __GENERATORS__,
-                                             IsADirectory=filepath.is_dir())
+                                             IsDirectory=filepath.is_dir())
                             )
     keyword_dict = index_keywords(db, rag_id, keywords, remainder)
     return dict(project_id=project_id, researcher_id=researcher_id, rag_id=rag_id,
                 artefact_id=artefact_id, path_id=path_id, keyword_dict=keyword_dict)
 
-def index_dependencies(db, rag_id, remainder):
+def index_dependencies(db, rag_id, remainder, researcher_id):
     keywords = list()
     for token in remainder.split('_'):
         match, par_project, par_date, par_step = confirm_partial_rag(token)
         if match:
-            if par_project is not None:
-                # It is not clear if this dependency is from the researcher, who generated the original file.
-                parent_id = db.upsert('RAG', dict(Project=par_project, Date=par_date, Enumerate=par_step))
-            else:
-                match, par_project, par_date, par_step = confirm_rag(rag_id[:-len(token)] + token)
-                parent_id = db.upsert('RAG', dict(Project=par_project, Date=par_date, Enumerate=par_step))
+            if par_project is None:
+                match, par_project, par_date, par_step = confirm_partial_rag(rag_id[:-len(token)] + token)
+            parent_id = db.upsert('RAG', dict(ID=par_project + par_date + par_step,
+                                              Project=par_project, Date=par_date, Step=par_step,
+                                              ResearcherID=researcher_id))
             kg_id = db.upsert('KnowledgeGraph', dict(Parent=parent_id, Child=rag_id))
         else:
             keywords.append(token)
+    # Removing trailing suffix, but keep potential earlier .
+    keywords[-1] = '.'.join(keywords[-1].split('.')[:-1])
     return keywords
 
 def index_keywords(db, rag_id, keywords, remainder):
-    pass
+    keyword_ids = []
+    keyword_index = []
+    keyvalue_ids = []
+    if '' in keywords:  # potential key-value pairs
+        for first, second in itertools.pairwise(keywords):
+            if first == '':
+                continue
+            kwd_id = upsert_keyword(db, first, keyword_ids, keyword_index, rag_id)
+            try:
+                val = float(second)
+                is_numeric = True
+            except ValueError:
+                is_numeric = False
+            if second != '':  # key_value pair
+                keyvalue_index_id = db.insert('KeyValueIndex',
+                                         dict(RAG=rag_id, Keyword=kwd_id, Value=second, IsNumeric=is_numeric))
+                keyvalue_ids.append(keyvalue_index_id)
+    else:
+        for kwd in keywords:
+            kwd_id = upsert_keyword(db, kwd, keyword_ids, keyword_index, rag_id)
+    return keyword_ids, keyword_index, keyvalue_ids
+
+
+def upsert_keyword(db, first, keyword_ids, keyword_index, rag_id):
+    kwd_id = db.upsert('Keyword', dict(Keyword=first))
+    kwd_index_id = db.insert('KeywordIndex', dict(RAG=rag_id, Keyword=kwd_id))
+    keyword_ids.append(kwd_id)
+    keyword_index.append(kwd_index_id)
+    return kwd_id
+
 
 def index_note_artefact(path, filename, markup='org'):
     pass
+
+if __name__ == '__main__':
+    from pathlib import Path
+    from contexere.data.interfaces.contextdb import ContextDB
+
+    in_memory_db = ContextDB(path='')
+    in_memory_db.create_tables()
+    index_file_artefact(in_memory_db, Path.home() / 'ERP26pBa_9b__example__value_1.txt',
+                        'ERP', '26pB', 'a', '9b__example__value_1.txt', 'testuser')
