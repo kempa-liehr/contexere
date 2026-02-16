@@ -90,6 +90,7 @@ class ContextDB:
         self.engine = create_engine('sqlite://' + str(self.path))
         self.inspector = inspect(self.engine)
         self.connection = None
+        self.updated = {table: {} for table in self.metadata.tables}
 
     def __enter__(self):
         self.connect()
