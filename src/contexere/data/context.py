@@ -13,3 +13,10 @@ def confirm_rag(token, pattern=__pattern__):
     else:
         project, date, step, keywords = None, None, None, None
     return match, project, date, step, keywords
+
+def index_file_artefact(db, path, project, date, step, keywords):
+    pass
+    #  db.upsert('Project', dict(Name=project))
+
+def index_note_artefact(path, filename, markup='org'):
+    pass

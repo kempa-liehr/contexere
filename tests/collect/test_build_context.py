@@ -10,6 +10,7 @@ def temp_dir(tmp_path_factory):
 def fill_folder(path, *files):
     for fn in files:
         (path / fn).write_text("x", encoding="utf-8")
+
 def test_empty_directory(temp_dir):
     context, timeline = build_context(temp_dir)
     assert context == {} and timeline == {}
