@@ -4,7 +4,7 @@ import pandas as pd
 import pytz
 from tzlocal import get_localzone
 
-from contexere import __month_dict__, __day_dict__, __hours__
+from contexere.conf import __month_dict__, __day_dict__, __hours__
 from contexere.data.context import __pattern__ as schematic
 from contexere.collect import build_context, summary
 from contexere.analytics import last
