@@ -48,12 +48,17 @@ research_artefacts = Table('Artefact', metadata,
                            Column('IsGenerator', Boolean(), default=False),
                            )
 
+research_artefacts = Table('MarkupFile', metadata,
+                           Column('ID', Integer(), primary_key=True, autoincrement=True),
+                           Column('FileName', String(conf.__MAX_FILENAME_LENGTH_BYTES__), nullable=False),
+                           Column('FileExtension', String(conf.__MAX_FILE_EXTENSION_LENGTH_BYTES__), nullable=False),
+                           Column('Path', ForeignKey('Path.ID'), nullable=False),
+                           )
+
 research_notes = Table('Note', metadata,
                        Column('ID', Integer(), primary_key=True, autoincrement=True),
                        Column('RAG', ForeignKey('RAG.ID'), nullable=False),
-                       Column('FileName', String(conf.__MAX_FILENAME_LENGTH_BYTES__), nullable=False),
-                       Column('FileExtension', String(conf.__MAX_FILE_EXTENSION_LENGTH_BYTES__), nullable=False),
-                       Column('Path', ForeignKey('Path.ID'), nullable=False),
+                       Column('File', ForeignKey('MarkupFile.ID'), nullable=False),
                        Column('Quote', String(conf.__MAX_QUOTE_LENGTH__)),
                        Column('LineNr', Integer(), nullable=False),
                        )
