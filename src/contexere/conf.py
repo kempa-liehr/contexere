@@ -19,6 +19,8 @@ __MAX_PROJECT_ID_LENGTH__ = 7
 __MAX_QUOTE_LENGTH__ = 255
 __MAX_RESEARCHER_NAME_LENGTH__ = 22
 __GENERATORS__ = ['.py', '.ipynb']
+__IGNORE__ = ['*/.Trash/*', '*.bbl', '*.bst', '*.blt', "*.log",
+              "*/.ipynb_checkpoints", "*/build/*", "*-checkpoint.ipynb", "*.pyc"]
 
 if not __CONTEXERE_CACHE_DIR__.exists():
     __CONTEXERE_CACHE_DIR__.mkdir()
