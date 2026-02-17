@@ -14,10 +14,6 @@ def db():
     in_memory_db.create_tables()
     return in_memory_db
 
-def fill_folder(path, *files):
-    for fn in files:
-        (path / fn).write_text("x", encoding="utf-8")
-
 def test_file_with_dependency(temp_dir, db):
     index_file_artefact(db, temp_dir / 'ERP26pBa_9b__example__value_1.txt',
                         'ERP', '26pB', 'a', '9b__example__value_1.txt')
