@@ -1,5 +1,5 @@
 import pytest
-from contexere.data.context import index_file_artefact
+from contexere.data.cache import fill_cache
 from contexere.data.interfaces.contextdb import ContextDB
 
 @pytest.fixture()
@@ -22,45 +22,37 @@ def test_unrelated_and_related_file(temp_dir, db):
     fill_folder(temp_dir, 'notes.txt', 'ERP26pBa_9b__example__value_1.txt')
     with open(temp_dir / 'logbook.org', 'w') as f:
         f.write('Title\n* ERP26p9b -- Extracted note\n')
-    index_file_artefact(db, temp_dir, 'ERP', '26pB', 'a', 'example.txt')
+
+    fill_cache(db, root=temp_dir)
     tables = {table: db.select_all(table) for table in db.metadata.tables}
-    print(tables)
     for table, df in tables.items():
-        print(table)
-        print(df)
         if table in ['RAG', 'Keyword', 'KeywordIndex']:
             assert len(df) == 2
+        elif table in ['MarkupFile', 'Note']:
+            assert len(df) == 0
         else:
             assert len(df) == 1
         if table == 'RAG':
-            assert table['RAG'].loc[1, 'ID'] == 'ERP26p9b'
-        else:
-            assert table.index[0] == 1
-    assert tables['Researcher'].loc[0, 'Name'] == 'testuser'
+            assert df.loc[0, 'ID'] == 'ERP26pBa'
+            assert df.loc[1, 'ID'] == 'ERP26p9b'
+        elif table not in ['MarkupFile', 'Note']:
+            assert df.loc[0, 'ID'] == 1
     assert tables['Project'].loc[0, 'Name'] == 'ERP'
-    assert tables['RAG'].loc[0, 'Project'] == 1
+    assert tables['RAG'].loc[0, 'Project'] == 'ERP'
     assert tables['RAG'].loc[0, 'Date'] == '26pB'
-    assert tables['RAG'].loc[0, 'Enumerator'] == 'a'
-    assert tables['RAG'].loc[0, 'ResearcherID'] == '1'
-    assert tables['RAG'].loc[1, 'Project'] == 1
+    assert tables['RAG'].loc[0, 'Step'] == 'a'
+    assert tables['RAG'].loc[1, 'Project'] == 'ERP'
     assert tables['RAG'].loc[1, 'Date'] == '26p9'
-    assert tables['RAG'].loc[1, 'Enumerator'] == 'b'
-    assert tables['RAG'].loc[1, 'ResearcherID'] == '1'
-    assert tables['KnowledeGraph'].loc[0, 'Parent'] == 'ERP26p9b'
-    assert tables['KnowledeGraph'].loc[0, 'Child'] == 'ERP26pBa'
-    assert tables['Path'].loc[0, 'Path'] == str(temp_dir)
-    assert tables['Artefact'].loc[0, 'RAG'] == 'ERP26p9b'
+    assert tables['RAG'].loc[1, 'Step'] == 'b'
+    assert tables['KnowledgeGraph'].loc[0, 'Parent'] == 'ERP26p9b'
+    assert tables['KnowledgeGraph'].loc[0, 'Child'] == 'ERP26pBa'
+    assert tables['Path'].loc[0, 'Name'] == str(temp_dir)
+    assert tables['Artefact'].loc[0, 'RAG'] == 'ERP26pBa'
     assert tables['Artefact'].loc[0, 'FileName'] == 'ERP26pBa_9b__example__value_1.txt'
-    assert tables['Artefact'].loc[0, 'FileExtension'] == 'txt'
+    assert tables['Artefact'].loc[0, 'FileExtension'] == '.txt'
     assert tables['Artefact'].loc[0, 'Path'] == 1
     assert not tables['Artefact'].loc[0, 'IsGenerator']
-    assert tables['MarkupFile'].loc[0, 'Filename'] == 'logbook.org'
-    assert tables['MarkupFile'].loc[0, 'FileExtension'] == 'org'
-    assert tables['MarkupFile'].loc[0, 'Path'] == 1
-    assert tables['Note'].loc[0, 'RAG'] == 'ERP26p9b'
-    assert tables['Note'].loc[0, 'File'] == 1
-    assert tables['Note'].loc[0, 'Quote'] == '* ERP26p9b -- Extracted note'
-    assert tables['Note'].loc[0, 'LineNr'] == 1
+    assert not tables['Artefact'].loc[0, 'IsDirectory']
     assert tables['Keyword'].loc[0, 'Keyword'] == 'example'
     assert tables['Keyword'].loc[1, 'Keyword'] == 'value'
     assert tables['KeywordIndex'].loc[0, 'RAG'] == 'ERP26pBa'
