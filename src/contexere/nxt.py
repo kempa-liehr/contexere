@@ -125,7 +125,7 @@ def main(args):
     setup_logging(args.loglevel)
     _logger.debug("Start building context...")
     if args.init_cache:
-        db = ContextDB(args.database)
+        db = ContextDB(path=args.database)
         fill_cache(db, root=args.path)
     elif args.summary:
         try:
