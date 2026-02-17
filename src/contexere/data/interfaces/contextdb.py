@@ -1,4 +1,5 @@
 import pandas as pd
+from pathlib import Path
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, MetaData, Table
 from sqlalchemy import  exists, and_, create_engine, inspect, insert, select
 from sqlalchemy.exc import IntegrityError
@@ -65,12 +66,17 @@ key_value_index = Table('KeyValueIndex', metadata,
 class ContextDB:
     def __init__(self, metadata=metadata, path=conf.__CONTEXERE_CACHE_DB__):
         self.metadata = metadata
-        self.path = path
-        filler = '/' if self.path != '' else ''
-        self.engine = create_engine('sqlite://' + filler + str(self.path))
+        self.create_engine(path)  # set self.path and self.engine
         self.inspector = inspect(self.engine)
         self.connection = None
         self.updated = {table: {} for table in self.metadata.tables}
+
+    def create_engine(self, path):
+        if path == '' or path == ":memory:":
+            self.path = ":memory:"
+        else:
+            self.path = str(Path(path).absolute())
+        self.engine = create_engine('sqlite:///' + self.path)
 
     def __enter__(self):
         self.connect()
