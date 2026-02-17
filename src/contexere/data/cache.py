@@ -10,7 +10,7 @@ def fill_cache(db, root='/'):
     db.create_tables()
     for path in root.rglob('*'):
         if not exclude_path(path):
-            match, project, date, step, keywords = confirm_rag(path.name.replace(' ', '_'))
+            match, project, date, step, keywords = confirm_rag(path.stem.replace(' ', '_'))
             if match:
                 try:
                     index_file_artefact(db, path, project, date, step, keywords)

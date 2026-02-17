@@ -16,7 +16,7 @@ def db():
 
 def test_file_with_dependency(temp_dir, db):
     index_file_artefact(db, temp_dir / 'ERP26pBa_9b__example__value_1.txt',
-                        'ERP', '26pB', 'a', '9b__example__value_1.txt')
+                        'ERP', '26pB', 'a', '9b__example__value_1')
     tables = {table: db.select_all(table) for table in db.metadata.tables}
     for table, df in tables.items():
         if table in ['RAG', 'Keyword', 'KeywordIndex']:
