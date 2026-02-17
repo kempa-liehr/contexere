@@ -33,6 +33,7 @@ def test_two_related_files(temp_dir):
     assert context['ERP']['26pB']['a'] == [temp_dir / 'ERP26pBa_example.txt']
     assert timeline['26pA'] == {'ERP': {'a': [temp_dir / 'ERP26pAa_example.txt']}}
     assert timeline['26pB'] == {'ERP': {'a': [temp_dir / 'ERP26pBa_example.txt']}}
+
 def test_three_related_files(temp_dir):
     fill_folder(temp_dir, 'ERP26pAa_example.txt', 'ERP26pBa_example.txt', 'ERP26pAa_data.csv')
     context, timeline = build_context(temp_dir)
