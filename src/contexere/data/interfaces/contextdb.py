@@ -66,7 +66,8 @@ class ContextDB:
     def __init__(self, metadata=metadata, path=conf.__CONTEXERE_CACHE_DB__):
         self.metadata = metadata
         self.path = path
-        self.engine = create_engine('sqlite://' + str(self.path))
+        filler = '/' if self.path != '' else ''
+        self.engine = create_engine('sqlite://' + filler + str(self.path))
         self.inspector = inspect(self.engine)
         self.connection = None
         self.updated = {table: {} for table in self.metadata.tables}
