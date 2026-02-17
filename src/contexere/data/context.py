@@ -58,7 +58,8 @@ def index_dependencies(db, rag_id, remainder):
         else:
             keywords.append(token)
     # Removing trailing suffix, but keep potential earlier .
-    keywords[-1] = '.'.join(keywords[-1].split('.')[:-1])
+    if '.' in remainder:
+        keywords[-1] = '.'.join(keywords[-1].split('.')[:-1])
     return keywords
 
 def index_keywords(db, rag_id, keywords, remainder):
@@ -101,3 +102,5 @@ if __name__ == '__main__':
     in_memory_db.create_tables()
     index_file_artefact(in_memory_db, Path.home() / 'ERP26pBa_9b__example__value_1.txt',
                         'ERP', '26pB', 'a', '9b__example__value_1.txt')
+    index_file_artefact(in_memory_db, Path.home() / 'ERP26pBa_example',
+                        'ERP', '26pB', 'a', 'example')
