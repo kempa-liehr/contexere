@@ -18,7 +18,7 @@ def fill_folder(path, *files):
     for fn in files:
         (path / fn).write_text("x", encoding="utf-8")
 
-def test_unrelated_and_related_file(temp_dir, db):
+def test_unrelated_and_related_file(db, temp_dir):
     fill_folder(temp_dir, 'notes.txt', 'ERP26pBa_9b__example__value_1.txt')
     with open(temp_dir / 'logbook.org', 'w') as f:
         f.write('Title\n* ERP26p9b -- Extracted note\n')
@@ -59,6 +59,41 @@ def test_unrelated_and_related_file(temp_dir, db):
     assert tables['KeyValueIndex'].loc[0, 'Keyword'] == 2
     assert tables['KeyValueIndex'].loc[0, 'Value'] == '1'
     assert tables['KeyValueIndex'].loc[0, 'IsNumeric']
+
+def count(col):
+    values = col.tolist()
+    return {v: values.count(v) for v in set(values)}
+
+def test_three_related_files(db, temp_dir):
+    fill_folder(temp_dir, 'ERP26pAa_example.txt', 'ERP26pBa_example.txt', 'ERP26pAa_data.csv')
+
+    fill_cache(db, root=temp_dir)
+    tables = {table: db.select_all(table) for table in db.metadata.tables}
+    for table, df in tables.items():
+        if table in ['RAG', 'Keyword']:
+            assert len(df) == 2
+        elif table in ['KnowledgeGraph', 'KeyValueIndex']:
+            assert len(df) == 0
+        elif table in ['Artefact', 'KeywordIndex']:
+            assert len(df) == 3
+        else:
+            assert len(df) == 1
+        if table == 'RAG':
+            assert set(df['ID'].values) == {'ERP26pAa', 'ERP26pBa'}
+    assert tables['Project'].loc[0, 'Name'] == 'ERP'
+    assert tables['RAG']['Project'].unique() == ['ERP']
+    assert set(tables['RAG']['Date'].values) == {'26pA', '26pB'}
+    assert tables['RAG']['Step'].unique() == ['a']
+    assert tables['Path'].loc[0, 'Name'] == str(temp_dir)
+    assert count(tables['Artefact']['RAG']) == {'ERP26pAa': 2, 'ERP26pBa': 1}
+    assert set(tables['Artefact']['FileName'].values) == {'ERP26pAa_example.txt',
+                                                          'ERP26pBa_example.txt', 'ERP26pAa_data.csv'}
+    assert count(tables['Artefact']['FileExtension']) == {'.txt': 2, '.csv': 1}
+    assert tables['Artefact']['Path'].unique() == [1]
+    assert tables['Artefact']['IsGenerator'].sum() == 0
+    assert tables['Artefact']['IsDirectory'].sum() == 0
+    assert set(tables['Keyword']['Keyword'].values) == {'example', 'data'}
+    assert count(tables['KeywordIndex']['RAG']) == {'ERP26pAa': 2, 'ERP26pBa': 1}
 
 
 
