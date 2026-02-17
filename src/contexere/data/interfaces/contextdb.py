@@ -14,18 +14,11 @@ projects = Table('Project', metadata,
                  Column('Description', String(255)),
                  )
 
-researcher = Table('Researcher', metadata,
-                 Column('ID', Integer(), primary_key=True, autoincrement=True),
-                 Column('Name', String(conf.__MAX_RESEARCHER_NAME_LENGTH__), unique=True, nullable=False),
-                 Column('Email', String(255)),
-                 )
-
 research_artefact_groups = Table('RAG', metadata,
                                  Column('ID', String(rag_id_length), primary_key=True),
                                  Column('Project', ForeignKey('Project.Name'), nullable=False),
                                  Column('Date', String(4), nullable=False),
                                  Column('Step', String(1), nullable=False),
-                                 Column('ResearcherID', ForeignKey('Researcher.ID'), nullable=False),
                                  )
 
 research_knowledge_graph = Table('KnowledgeGraph', metadata,
@@ -48,21 +41,6 @@ research_artefacts = Table('Artefact', metadata,
                            Column('IsGenerator', Boolean(), default=False),
                            Column('IsDirectory', Boolean(), default=False),
                            )
-
-research_artefacts = Table('MarkupFile', metadata,
-                           Column('ID', Integer(), primary_key=True, autoincrement=True),
-                           Column('FileName', String(conf.__MAX_FILENAME_LENGTH_BYTES__), nullable=False),
-                           Column('FileExtension', String(conf.__MAX_FILE_EXTENSION_LENGTH_BYTES__), nullable=False),
-                           Column('Path', ForeignKey('Path.ID'), nullable=False),
-                           )
-
-research_notes = Table('Note', metadata,
-                       Column('ID', Integer(), primary_key=True, autoincrement=True),
-                       Column('RAG', ForeignKey('RAG.ID'), nullable=False),
-                       Column('File', ForeignKey('MarkupFile.ID'), nullable=False),
-                       Column('Quote', String(conf.__MAX_QUOTE_LENGTH__), nullable=False),
-                       Column('LineNr', Integer(), nullable=False),
-                       )
 
 keywords = Table('Keyword', metadata,
                  Column('ID', Integer(), primary_key=True, autoincrement=True),
@@ -118,9 +96,6 @@ class ContextDB:
             df = pd.read_sql_query(select(self.metadata.tables[table]), conn)
         return df
 
-    def get_researchers(self):
-        return self.select_all('Researcher')
-
     def exists(self, table_name, data):
         """
         Test if table `table_name` already has a record having the
@@ -141,8 +116,6 @@ class ContextDB:
         if record_id is None:
             record_id = self.insert(table_name, data)
         return record_id
-
-
 
     def insert(self, table_name, data):
         """
