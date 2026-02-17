@@ -3,11 +3,12 @@ import logging
 from pathlib import Path
 import sys
 
-import contexere.analytics
-import contexere.collect
+
 from contexere import __version__
 from contexere.collect import summary
-from contexere.data.cache import init_cache
+from contexere.conf import __CONTEXERE_CACHE_DB__
+from contexere.data.cache import fill_cache
+from contexere.data.interfaces.contextdb import ContextDB
 from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
@@ -45,6 +46,12 @@ def parse_args(args):
                         nargs='?',
                         type=Path,
                         default=Path.cwd())
+    parser.add_argument("-d",
+                        "--database",
+                        dest="database",
+                        help=f"Path to SQLite database (default: {__CONTEXERE_CACHE_DB__})",
+                        type=Path,
+                        default=__CONTEXERE_CACHE_DB__)
     parser.add_argument(
         "-p",
         "--project",
@@ -118,7 +125,8 @@ def main(args):
     setup_logging(args.loglevel)
     _logger.debug("Start building context...")
     if args.init_cache:
-        init_cache(args.path)
+        db = ContextDB(args.database)
+        fill_cache(db, root=args.path)
     elif args.summary:
         try:
             print(summary(args.path, recursive=args.recursive))
