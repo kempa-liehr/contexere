@@ -1,5 +1,4 @@
 import pytest
-from contexere.data.cache import init_researcher_table
 from contexere.data.context import index_file_artefact
 from contexere.data.interfaces.contextdb import ContextDB
 
@@ -20,7 +19,6 @@ def fill_folder(path, *files):
         (path / fn).write_text("x", encoding="utf-8")
 
 def test_unrelated_and_related_file(temp_dir, db):
-    init_researcher_table(db, user='testuser')
     fill_folder(temp_dir, 'notes.txt', 'ERP26pBa_9b__example__value_1.txt')
     with open(temp_dir / 'logbook.org', 'w') as f:
         f.write('Title\n* ERP26p9b -- Extracted note\n')

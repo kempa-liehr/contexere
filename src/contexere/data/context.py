@@ -28,12 +28,11 @@ def confirm_partial_rag(token, pattern=__partial__):
         project, date, step = None, None, None
     return match, project, date, step
 
-def index_file_artefact(db, filepath, project, date, step, remainder, user):
+def index_file_artefact(db, filepath, project, date, step, remainder):
     project_id = db.upsert('Project', dict(Name=project))
-    researcher_id = db.upsert('Researcher', dict(Name=user))
     rag_id = db.upsert('RAG', dict(ID=project + date + step,
-                                   Project=project, Date=date, Step=step, ResearcherID=researcher_id))
-    keywords = index_dependencies(db, rag_id, remainder, researcher_id)
+                                   Project=project, Date=date, Step=step))
+    keywords = index_dependencies(db, rag_id, remainder)
     path_id = db.upsert('Path', dict(Name=str(filepath.parents[0])))
     artefact_id = db.insert('Artefact', dict(RAG=rag_id,
                                              FileName=filepath.name, FileExtension=filepath.suffix,
@@ -42,10 +41,10 @@ def index_file_artefact(db, filepath, project, date, step, remainder, user):
                                              IsDirectory=filepath.is_dir())
                             )
     keyword_dict = index_keywords(db, rag_id, keywords, remainder)
-    return dict(project_id=project_id, researcher_id=researcher_id, rag_id=rag_id,
+    return dict(project_id=project_id, rag_id=rag_id,
                 artefact_id=artefact_id, path_id=path_id, keyword_dict=keyword_dict)
 
-def index_dependencies(db, rag_id, remainder, researcher_id):
+def index_dependencies(db, rag_id, remainder):
     keywords = list()
     for token in remainder.split('_'):
         match, par_project, par_date, par_step = confirm_partial_rag(token)
@@ -53,8 +52,7 @@ def index_dependencies(db, rag_id, remainder, researcher_id):
             if par_project is None:
                 match, par_project, par_date, par_step = confirm_partial_rag(rag_id[:-len(token)] + token)
             parent_id = db.upsert('RAG', dict(ID=par_project + par_date + par_step,
-                                              Project=par_project, Date=par_date, Step=par_step,
-                                              ResearcherID=researcher_id))
+                                              Project=par_project, Date=par_date, Step=par_step))
             kg_id = db.upsert('KnowledgeGraph', dict(Parent=parent_id, Child=rag_id))
         else:
             keywords.append(token)
@@ -94,9 +92,6 @@ def upsert_keyword(db, first, keyword_ids, keyword_index, rag_id):
     return kwd_id
 
 
-def index_note_artefact(path, filename, markup='org'):
-    pass
-
 if __name__ == '__main__':
     from pathlib import Path
     from contexere.data.interfaces.contextdb import ContextDB
@@ -104,4 +99,4 @@ if __name__ == '__main__':
     in_memory_db = ContextDB(path='')
     in_memory_db.create_tables()
     index_file_artefact(in_memory_db, Path.home() / 'ERP26pBa_9b__example__value_1.txt',
-                        'ERP', '26pB', 'a', '9b__example__value_1.txt', 'testuser')
+                        'ERP', '26pB', 'a', '9b__example__value_1.txt')
