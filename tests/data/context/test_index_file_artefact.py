@@ -21,15 +21,11 @@ def test_file_with_dependency(temp_dir, db):
     for table, df in tables.items():
         if table in ['RAG', 'Keyword', 'KeywordIndex']:
             assert len(df) == 2
-        elif table in ['MarkupFile', 'Note']:
-            assert len(df) == 0
         else:
             assert len(df) == 1
         if table == 'RAG':
             assert df.loc[0, 'ID'] == 'ERP26pBa'
             assert df.loc[1, 'ID'] == 'ERP26p9b'
-        elif table not in ['MarkupFile', 'Note']:
-            assert df.loc[0, 'ID'] == 1
     assert tables['Project'].loc[0, 'Name'] == 'ERP'
     assert tables['RAG'].loc[0, 'Project'] == 'ERP'
     assert tables['RAG'].loc[0, 'Date'] == '26pB'
