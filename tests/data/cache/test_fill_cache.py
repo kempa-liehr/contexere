@@ -95,5 +95,34 @@ def test_three_related_files(db, temp_dir):
     assert set(tables['Keyword']['Keyword'].values) == {'example', 'data'}
     assert count(tables['KeywordIndex']['RAG']) == {'ERP26pAa': 2, 'ERP26pBa': 1}
 
+def test_three_related_files_different_projects(db, temp_dir):
+    fill_folder(temp_dir, 'ERP26pAa_example.txt', 'ERQ26pBa_example.txt', 'ERP26pAa_data.csv')
 
+    fill_cache(db, root=temp_dir)
+    tables = {table: db.select_all(table) for table in db.metadata.tables}
+    for table, df in tables.items():
+        if table in ['RAG', 'Keyword', 'Project']:
+            assert len(df) == 2
+        elif table in ['KnowledgeGraph', 'KeyValueIndex']:
+            assert len(df) == 0
+        elif table in ['Artefact', 'KeywordIndex']:
+            assert len(df) == 3
+        else:
+            assert len(df) == 1
+        if table == 'RAG':
+            assert set(df['ID'].values) == {'ERP26pAa', 'ERQ26pBa'}
+    assert count(tables['Project']['Name']) == {'ERP': 1, 'ERQ': 1}
+    assert count(tables['RAG']['Project']) == {'ERP': 1, 'ERQ': 1}
+    assert set(tables['RAG']['Date'].values) == {'26pA', '26pB'}
+    assert tables['RAG']['Step'].unique() == ['a']
+    assert tables['Path'].loc[0, 'Name'] == str(temp_dir)
+    assert count(tables['Artefact']['RAG']) == {'ERP26pAa': 2, 'ERQ26pBa': 1}
+    assert set(tables['Artefact']['FileName'].values) == {'ERP26pAa_example.txt',
+                                                          'ERQ26pBa_example.txt', 'ERP26pAa_data.csv'}
+    assert count(tables['Artefact']['FileExtension']) == {'.txt': 2, '.csv': 1}
+    assert tables['Artefact']['Path'].unique() == [1]
+    assert tables['Artefact']['IsGenerator'].sum() == 0
+    assert tables['Artefact']['IsDirectory'].sum() == 0
+    assert set(tables['Keyword']['Keyword'].values) == {'example', 'data'}
+    assert count(tables['KeywordIndex']['RAG']) == {'ERP26pAa': 2, 'ERQ26pBa': 1}
 
