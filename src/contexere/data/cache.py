@@ -7,7 +7,10 @@ def fill_cache(db, root='/'):
     for path in root.rglob('*'):
         match, project, date, step, keywords = confirm_rag(path.name)
         if match:
-            index_file_artefact(db, path, project, date, step, keywords)
+            try:
+                index_file_artefact(db, path, project, date, step, keywords)
+            except:
+                print(path)
 
 
 if __name__ == '__main__':
