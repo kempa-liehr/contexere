@@ -41,7 +41,7 @@ def index_file_artefact(db, filepath, project, date, step, remainder):
                                              IsGenerator=filepath.suffix in __GENERATORS__,
                                              IsDirectory=filepath.is_dir())
                             )
-    keyword_dict = index_keywords(db, rag_id, keywords, remainder)
+    keyword_dict = index_keywords(db, rag_id, keywords)
     return dict(project_id=project_id, rag_id=rag_id,
                 artefact_id=artefact_id, path_id=path_id, keyword_dict=keyword_dict)
 
@@ -57,12 +57,9 @@ def index_dependencies(db, rag_id, remainder):
             kg_id = db.upsert('KnowledgeGraph', dict(Parent=parent_id, Child=rag_id))
         else:
             keywords.append(token)
-    # Removing trailing suffix, but keep potential earlier .
-    if '.' in remainder:
-        keywords[-1] = '.'.join(keywords[-1].split('.')[:-1])
     return keywords
 
-def index_keywords(db, rag_id, keywords, remainder):
+def index_keywords(db, rag_id, keywords):
     keyword_ids = []
     keyword_index = []
     keyvalue_ids = []
