@@ -104,7 +104,6 @@ class ContextDB:
         unique_cols = [col for col in self.metadata.tables[table_name].columns
                        if not col.nullable and (table_name == 'RAG' or col.name != 'ID')]
         predicates = [col == data[col.name] for col in unique_cols]
-        print(table_name, 'predicates', predicates)
         stmt = select(self.metadata.tables[table_name].columns.ID).where(and_(*predicates))
         with self.engine.begin() as conn:
             existing_ID = conn.execute(stmt).scalar()
@@ -121,8 +120,6 @@ class ContextDB:
         """
         Inserts data given as dictionary inside a transaction and returns the new ID.
         """
-        print('Insert', table_name)
-        print(data)
         # minimal validation
         table = self.metadata.tables[table_name]
         for colname, col in table.columns.items():
