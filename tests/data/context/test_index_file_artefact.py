@@ -82,5 +82,30 @@ def test_folder(temp_dir, db):
     assert tables['KeywordIndex'].loc[0, 'RAG'] == 'ERP26pBa'
     assert tables['KeywordIndex'].loc[0, 'Keyword'] == 1
 
+def test_RAG_without_dependency_or_keyword(temp_dir, db):
+    rag_dir = temp_dir
+    index_file_artefact(db, rag_dir / 'ERP26pBa',
+                        'ERP', '26pB', 'a', None)
+    tables = {table: db.select_all(table) for table in db.metadata.tables}
+    for table, df in tables.items():
+        print(table)
+        if table in ['KnowledgeGraph', 'KeyValueIndex', 'Keyword', 'KeywordIndex']:
+            assert len(df) == 0
+        else:
+            assert len(df) == 1
+        if table == 'RAG':
+            assert df.loc[0, 'ID'] == 'ERP26pBa'
+    assert tables['Project'].loc[0, 'Name'] == 'ERP'
+    assert tables['RAG'].loc[0, 'Project'] == 'ERP'
+    assert tables['RAG'].loc[0, 'Date'] == '26pB'
+    assert tables['RAG'].loc[0, 'Step'] == 'a'
+    assert tables['Path'].loc[0, 'Name'] == str(temp_dir)
+    assert tables['Artefact'].loc[0, 'RAG'] == 'ERP26pBa'
+    assert tables['Artefact'].loc[0, 'FileName'] == 'ERP26pBa'
+    assert tables['Artefact'].loc[0, 'FileExtension'] == ''
+    assert tables['Artefact'].loc[0, 'Path'] == 1
+    assert not tables['Artefact'].loc[0, 'IsGenerator']
+    assert not tables['Artefact'].loc[0, 'IsDirectory']
+
 
 
