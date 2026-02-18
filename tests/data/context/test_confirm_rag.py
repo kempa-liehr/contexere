@@ -39,11 +39,11 @@ def test_confirm_rag_match_with_keywords():
     assert keywords == 'test'
 
     match, project, date, step, keywords = confirm_rag('ERP26pGaa__test')
-    assert match is not None
-    assert project == 'ERP'
-    assert date == '26pG'
-    assert step == 'aa'
-    assert keywords == 'test'
+    assert match is None
+    assert project is None
+    assert date is None
+    assert step is None
+    assert keywords is None
 
     match, project, date, step, keywords = confirm_rag('ERP26pGa__test=2')
     assert match is not None
@@ -58,7 +58,7 @@ def test_confirm_rag_with_spaces_in_filename():
     assert project == 'ERP'
     assert date == '26pG'
     assert step == 'a'
-    assert keywords is None
+    assert keywords == 'test=2'
 
 def test_confirm_rag_no_match_missing_project():
     match, project, date, step, keywords = confirm_rag('26pGa__test=2')
