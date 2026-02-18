@@ -57,7 +57,7 @@ def index_dependencies(db, rag_id, remainder):
     keywords = list()
     parse_dependencies = True
     tokens = list(remainder.split('_'))
-    while parse_dependencies:
+    while parse_dependencies and len(tokens) > 0:
         token = tokens.pop(0)
         match, par_project, par_date, par_step = confirm_partial_rag(token)
         if match:
