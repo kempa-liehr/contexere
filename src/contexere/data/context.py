@@ -47,15 +47,17 @@ def index_file_artefact(db, filepath, project, date, step, remainder):
 
 def index_dependencies(db, rag_id, remainder):
     keywords = list()
+    parse_dependencies = True
     for token in remainder.split('_'):
         match, par_project, par_date, par_step = confirm_partial_rag(token)
-        if match:
+        if parse_dependencies and match:
             if par_project is None:
                 match, par_project, par_date, par_step = confirm_partial_rag(rag_id[:-len(token)] + token)
             parent_id = db.upsert('RAG', dict(ID=par_project + par_date + par_step,
                                               Project=par_project, Date=par_date, Step=par_step))
             kg_id = db.upsert('KnowledgeGraph', dict(Parent=parent_id, Child=rag_id))
         else:
+            parse_dependencies = False
             keywords.append(token)
     return keywords
 
