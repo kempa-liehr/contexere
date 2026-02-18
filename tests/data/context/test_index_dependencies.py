@@ -41,3 +41,12 @@ def test_file_with_trailing_step_and_embedded_partial_rag(db):
     for actual, expected in zip(keywords, ['example', 'no', 'value']):
         assert actual == expected
 
+def test_file_with_dependency_without_keywords(db):
+    rag_id = db.upsert('RAG', dict(ID='ERP26pIb',
+                                   Project='ERP', Date='26pI', Step='b'))
+    keywords = index_dependencies(db, rag_id, 'a')
+    tables = {table: db.select_all(table) for table in db.metadata.tables}
+    assert len(tables['KnowledgeGraph']) == 1
+    assert tables['KnowledgeGraph'].loc[0, 'Parent'] == 'ERP26pIa'
+    assert tables['KnowledgeGraph'].loc[0, 'Child'] == 'ERP26pIb'
+
