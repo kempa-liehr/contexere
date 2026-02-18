@@ -8,7 +8,7 @@ from contexere.conf import __GENERATORS__
 __pattern__ = re.compile(r'^(?P<project>[a-zA-Z]+)'
                          r'(?P<date>[0-9]{2}[o-z][1-9A-V])'
                          r'(?P<step>[a-z])'
-                         r'(?:(?:_{1,2}| )(?P<kwds>\S+)|_{1,2})?$')
+                         r'(?:(?:_{1,2}| )(?P<kwds>.+)|_{1,2})?$')
 __partial__ = re.compile(r'^(?P<project>[A-Za-z]+(?=\d))'
                          r'?(?P<date>(?:\d{2}[o-z][1-9A-V]|[o-z][1-9A-V]|[1-9A-V])?)'
                          r'(?P<step>[a-z])$')
