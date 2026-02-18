@@ -33,7 +33,11 @@ def index_file_artefact(db, filepath, project, date, step, remainder):
     project_id = db.upsert('Project', dict(Name=project))
     rag_id = db.upsert('RAG', dict(ID=project + date + step,
                                    Project=project, Date=date, Step=step))
-    keywords = index_dependencies(db, rag_id, remainder)
+    if remainder is not None:
+        keywords = index_dependencies(db, rag_id, remainder)
+        keyword_dict = index_keywords(db, rag_id, keywords)
+    else:
+        keyword_dict = {}
     path_id = db.upsert('Path', dict(Name=str(filepath.parents[0])))
     artefact_id = db.insert('Artefact', dict(RAG=rag_id,
                                              FileName=filepath.name, FileExtension=filepath.suffix,
@@ -41,7 +45,6 @@ def index_file_artefact(db, filepath, project, date, step, remainder):
                                              IsGenerator=filepath.suffix in __GENERATORS__,
                                              IsDirectory=filepath.is_dir())
                             )
-    keyword_dict = index_keywords(db, rag_id, keywords)
     return dict(project_id=project_id, rag_id=rag_id,
                 artefact_id=artefact_id, path_id=path_id, keyword_dict=keyword_dict)
 
