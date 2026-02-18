@@ -48,10 +48,12 @@ def index_file_artefact(db, filepath, project, date, step, remainder):
 def index_dependencies(db, rag_id, remainder):
     keywords = list()
     parse_dependencies = True
-    for token in remainder.split('_'):
+    tokens = list(remainder.split('_'))
+    while parse_dependencies:
+        token = tokens.pop(0)
         match, par_project, par_date, par_step = confirm_partial_rag(token)
-        if parse_dependencies and match:
-            if par_project is None:
+        if match:
+            if par_project is None or par_date is None:
                 match, par_project, par_date, par_step = confirm_partial_rag(rag_id[:-len(token)] + token)
             parent_id = db.upsert('RAG', dict(ID=par_project + par_date + par_step,
                                               Project=par_project, Date=par_date, Step=par_step))
@@ -59,6 +61,7 @@ def index_dependencies(db, rag_id, remainder):
         else:
             parse_dependencies = False
             keywords.append(token)
+    keywords += tokens
     return keywords
 
 def index_keywords(db, rag_id, keywords):
