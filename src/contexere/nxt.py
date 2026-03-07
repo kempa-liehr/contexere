@@ -60,12 +60,12 @@ def parse_args(args):
                         type=Path,
                         default=__CONTEXERE_CACHE_DB__)
     parser.add_argument(
-        "-p",
-        "--project",
-        dest="project",
+        "-g",
+        "--group",
+        dest="group",
         type=str,
         default='',
-        help="Specify project abbreviation",
+        help="Project identifier for which the next research artefact GROUP will be suggested",
         action="store"
     )
     parser.add_argument(
@@ -133,7 +133,7 @@ def main(args):
         except ValueError as error:
             _logger.warning(error)
     else:
-        output = suggest_next(args.path, project=args.project, local=~args.utc, recursive=~args.cwd)
+        output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.cwd)
         if args.time:
             output += abbreviate_time(local=~args.utc)
         print(output)
