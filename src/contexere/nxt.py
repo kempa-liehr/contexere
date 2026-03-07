@@ -46,6 +46,13 @@ def parse_args(args):
                         nargs='?',
                         type=Path,
                         default=Path.cwd())
+    parser.add_argument(
+        "-c",
+        "--cwd",
+        dest="cwd",
+        help="Inspect files in current working dir only",
+        action="store_true"
+    )
     parser.add_argument("-d",
                         "--database",
                         dest="database",
@@ -60,13 +67,6 @@ def parse_args(args):
         default='',
         help="Specify project abbreviation",
         action="store"
-    )
-    parser.add_argument(
-        "-r",
-        "--recursive",
-        dest="recursive",
-        help="Use files from diretory tree",
-        action="store_true"
     )
     parser.add_argument(
         "-s",
@@ -129,11 +129,11 @@ def main(args):
         fill_cache(db, root=args.path)
     elif args.summary:
         try:
-            print(summary(args.path, recursive=args.recursive))
+            print(summary(args.path, recursive=~args.cwd))
         except ValueError as error:
             _logger.warning(error)
     else:
-        output = suggest_next(args.path, project=args.project, local=~args.utc, recursive=args.recursive)
+        output = suggest_next(args.path, project=args.project, local=~args.utc, recursive=~args.cwd)
         if args.time:
             output += abbreviate_time(local=~args.utc)
         print(output)

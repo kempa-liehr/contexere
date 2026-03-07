@@ -5,16 +5,16 @@ from tzlocal import get_localzone
 
 from contexere.scheme import abbreviate_date
 
-def _acronym(s: str) -> str:
+def _acronym(s):
     """Return the first letter of each word after replacing dashes and underscores with spaces."""
     return ''.join([word[0] for word in
                     s.replace('-', ' ').replace('_', ' ' ).split()])
 
-def _abbrmonth() -> str:
+def _abbrmonth():
     """Return the abbreviated year-month according to the contexere scheme."""
     return abbreviate_date(local=True)[:-1]
 
-def _abbrdate() -> str:
+def _abbrdate():
     """Return the abbreviated date according to the contexere scheme."""
     return abbreviate_date(local=True)
 
