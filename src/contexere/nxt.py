@@ -1,6 +1,8 @@
 import argparse
 import logging
+import os
 from pathlib import Path
+import subprocess
 import sys
 
 
@@ -9,7 +11,7 @@ from contexere.collect import summary
 from contexere.conf import __CONTEXERE_CACHE_DB__
 from contexere.data.cache import fill_cache
 from contexere.data.interfaces.contextdb import ContextDB
-from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
+from contexere.scheme import abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
 __copyright__ = "Andreas W. Kempa-Liehr"
@@ -68,6 +70,11 @@ def parse_args(args):
         help="Project identifier for which the next research artefact GROUP will be suggested",
         action="store"
     )
+    parser.add_argument("-p",
+                        "--project",
+                        dest="project",
+                        help="Create new project directory structure",
+                        action="store_true")
     parser.add_argument(
         "-s",
         "--summary",
@@ -132,6 +139,9 @@ def main(args):
             print(summary(args.path, recursive=~args.cwd))
         except ValueError as error:
             _logger.warning(error)
+    elif args.project:
+        os.chdir(args.path)
+        subprocess.run(["ccds", "https://github.com/kempa-liehr/cookiecutter-contexere"])
     else:
         output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.cwd)
         if args.time:
