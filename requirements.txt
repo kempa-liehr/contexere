@@ -1,4 +1,6 @@
 anytree
+cookiecutter-data-science
+GitPython
 pandas
 pytz
 sqlalchemy
