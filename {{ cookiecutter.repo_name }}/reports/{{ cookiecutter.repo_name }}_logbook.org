@@ -1,5 +1,5 @@
 #+TITLE: {{ cookiecutter.project_name }}
-#+AUTHOR: {{ cookiecutter.author }}
+#+AUTHOR: {{ cookiecutter.author_name }}
 
 {{ cookiecutter.description }}
 
