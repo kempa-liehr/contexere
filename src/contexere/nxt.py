@@ -1,4 +1,5 @@
 import argparse
+from cookiecutter.main import cookiecutter
 import logging
 import os
 from pathlib import Path
@@ -8,7 +9,7 @@ import sys
 
 from contexere import __version__
 from contexere.collect import summary
-from contexere.conf import __CONTEXERE_CACHE_DB__
+from contexere.conf import __CONTEXERE_CACHE_DB__, __COOKIECUTTER_PATH__
 from contexere.data.cache import fill_cache
 from contexere.data.interfaces.contextdb import ContextDB
 from contexere.scheme import abbreviate_time, suggest_next
@@ -140,8 +141,7 @@ def main(args):
         except ValueError as error:
             _logger.warning(error)
     elif args.project:
-        os.chdir(args.path)
-        subprocess.run(["ccds", "https://github.com/kempa-liehr/cookiecutter-contexere"])
+        cookiecutter(str(__COOKIECUTTER_PATH__), output_dir=str(args.path))
     else:
         output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.cwd)
         if args.time:
