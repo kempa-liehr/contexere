@@ -1,0 +1,8 @@
+#+TITLE: {{ cookiecutter.project_name }}
+#+AUTHOR: {{ cookiecutter.author }}
+
+{{ cookiecutter.description }}
+
+* ~{{ cookiecutter.repo_name }}{{ abbrmonth() }}~ -- {{ month() }}, started /{{ cookiecutter.project_name }}/
+** ~{{ cookiecutter.repo_name }}{{ firstRAG() }}~ -- Initialised project directory structure
+The directory structure is documented in ~{{ cookiecutter.repo_name }}/reports/{{ cookiecutter.repo_name }}{{ firstRAG() }}__directory_structure.txt~.
