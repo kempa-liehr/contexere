@@ -4,3 +4,4 @@ GitPython
 pandas
 pytz
 sqlalchemy
+chardet<6
