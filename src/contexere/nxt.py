@@ -142,7 +142,7 @@ def main(args):
             _logger.warning(error)
     elif args.project:
         import subprocess
-        subprocess.call(["ccds", "--output-dir", args.path, "--directory", str(__COOKIECUTTER_PATH__)])
+        subprocess.call(["ccds", "--output-dir", args.path, str(__COOKIECUTTER_PATH__)])
     else:
         output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.cwd)
         if args.time:
