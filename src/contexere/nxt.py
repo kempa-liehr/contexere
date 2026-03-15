@@ -141,7 +141,8 @@ def main(args):
         except ValueError as error:
             _logger.warning(error)
     elif args.project:
-        cookiecutter(str(__COOKIECUTTER_PATH__), output_dir=str(args.path))
+        import subprocess
+        subprocess.call(["ccds", "--output-dir", args.path, "--directory", str(__COOKIECUTTER_PATH__)])
     else:
         output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.cwd)
         if args.time:
