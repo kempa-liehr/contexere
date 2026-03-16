@@ -1,7 +1,5 @@
 import argparse
-from cookiecutter.main import cookiecutter
 import logging
-import os
 from pathlib import Path
 import subprocess
 import sys
@@ -141,7 +139,6 @@ def main(args):
         except ValueError as error:
             _logger.warning(error)
     elif args.project:
-        import subprocess
         subprocess.call(["ccds", "--output-dir", args.path, str(__COOKIECUTTER_PATH__)])
     else:
         output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.cwd)
