@@ -14,6 +14,7 @@ from ccds.hook_utils.dependencies import (
     write_dependencies,
     write_python_version,
 )
+packages.append('contexere')
 
 #
 #  TEMPLATIZED VARIABLES FILLED IN BY COOKIECUTTER
@@ -43,6 +44,7 @@ packages_to_install += flake8_black_isort
 pip_only_packages = [
     "awscli",
     "python-dotenv",
+    "contexere",
 ]
 
 # Select testing framework
