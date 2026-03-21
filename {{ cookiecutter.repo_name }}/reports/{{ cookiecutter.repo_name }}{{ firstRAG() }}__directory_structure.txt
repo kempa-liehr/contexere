@@ -12,13 +12,14 @@
 ├── models             <- Trained and serialized models, model predictions, or model summaries
 │
 ├── notebooks          <- Jupyter notebooks. Naming convention follows `contexere` syntax:
-│                         {{ cookiecutter.repo_name }}yymDc[_link[_link]]__keyword.ipynb with
-│                         `yy` is the two-digit truncated year
-│                         `m` is the abbreviated month
-│                         `D` is the abbreviated year
-│                         `c` is the research artefact group counter
-│                         `link` is the abbreviated predecessor research artefact group identifier
-│                         `keyword` is a list of underscore-separated keywords
+│   │                     {{ cookiecutter.repo_name }}yymDc[_link[_link]]__keyword.ipynb with
+│   │                     `yy` is the two-digit truncated year
+│   │                     `m` is the abbreviated month
+│   │                     `D` is the abbreviated year
+│   │                     `c` is the research artefact group counter
+│   │                     `link` is the abbreviated predecessor research artefact group identifier
+│   │                     `keyword` is a list of underscore-separated keywords
+│   └── 00_{{ cookiecutter.module_name }}_template.ipynb   <- Template Jupyter notebook
 │
 ├── pyproject.toml     <- Project configuration file with package metadata for
 │                         {{ cookiecutter.module_name }} and configuration for tools like black
