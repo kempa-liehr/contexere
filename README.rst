@@ -74,52 +74,45 @@ The module ``contexere`` can be installed from PyPi::
 
 Usage
 =====
-The project provides the command line tool ``name``::
+The project provides the command line tool ``nxt``::
 
-    usage: name [-h] [--version] [-n] [-p PROJECT] [-s] [-t] [-v] [-vv] [path]
+    usage: nxt [-h] [--version] [-i] [-c] [-d DATABASE] [-g GROUP] [-p] [-s] [-t]
+           [-u] [-v] [-vv]
+           [path]
 
     Suggest name for research artefact
-    
+
     positional arguments:
       path                  Path to folder with research artefacts (default:
                             current working dir)
-    
+
     options:
       -h, --help            show this help message and exit
       --version             show program's version number and exit
-      -n, --next            Suggest next artefact name
-      -p PROJECT, --project PROJECT
-                            Specify project abbreviation
-      -s, --summary         Sumarize files following the naming convention
+      -i, --init-cache      Init context cache
+      -c, --cwd             Inspect files in current working dir only
+      -d, --database DATABASE
+                            Path to SQLite database (default:
+                            /Users/akem134/.contexere/context.db)
+      -g, --group GROUP     Project identifier for which the next research
+                            artefact GROUP will be suggested
+      -p, --project         Create new project directory structure
+      -s, --summary         Summarise files following the naming convention
       -t, --time            add time abbreviation
-      -u, --utc             Generate timestamp with respect to UTC (default is local timezone)
+      -u, --utc             Generate timestamp with respect to UTC (default is
+                            local timezone)
       -v, --verbose         set loglevel to INFO
       -vv, --very-verbose   set loglevel to DEBUG
 
 Calling the tool without any arguments returns the date abbreviation of today::
 
-    name
+    nxt
     24xV
 
 Adding the option ``--time`` also abbreviates the actual time::
 
-    name --time
+    nxt --time
     24xVj36
-
-In an empty folder, a file name is suggested by specifying a project abbreviation and the ``--next`` option::
-
-    mkdir test_folder
-    cd test_folder
-    name --project DS --next
-    DS24xVa
-
-After the creation of the first file, only the ``--next`` option needs to be provided to get another file name suggestion::
-
-    touch DS24xVa__test.dat
-    name --next
-    DS24xVb
-
-Let's assume that ``DS24xVb`` is the name of a Jupyter notebook, which analyses results created by ``DS24xVa.py``. You can reflect this relation by actually naming the notebook ``DS24xVb_xVa__anlysis.ipynb`` to reflect its relation to ``DS24xVa.py``. However, simplifying the name by removing redundant elements of the reference ``DS24xVb_a__anlysis.ipynb`` is even more efficient.
 
     
 References
