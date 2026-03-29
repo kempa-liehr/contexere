@@ -6,10 +6,10 @@
 │
 ├── docs               <- A default mkdocs project; see www.mkdocs.org for details
 │
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-
-├── models             <- Trained and serialized models, model predictions, or model summaries
+{% if cookiecutter.dependency_file == 'environment.yml' %}├── environment.yml    <- Configuration file for Conda environments
+│                         https://docs.conda.io/projects/conda/en/stable/user-guide/tasks/manage-environments.html{% endif %}
+{% if cookiecutter.open_source_license != 'No license file' %}├── LICENSE            <- Open-source license{% endif %}
+├── Makefile           <- Makefile with convenience commands like `make create_environment`
 │
 ├── notebooks          <- Jupyter notebooks. Naming convention follows `contexere` syntax:
 │   │                     {{ cookiecutter.repo_name }}yymDc[_link[_link]]__keyword.ipynb with
@@ -23,37 +23,37 @@
 │
 ├── pyproject.toml     <- Project configuration file with package metadata for
 │                         {{ cookiecutter.module_name }} and configuration for tools like black
-│
 ├── README.md          <- The top-level README for researchers using this project.
 │
 ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│   └── 00_date_abbreviations.png  <- Table with date abbreviations
+│   └── {{ cookiecutter.module_name }}_bibliography.bib    <- Template bibliography
 │
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
+├── reports            <- Generated analysis like presentations and manuscripts directed to audiences outside the core research team
 │
-├── results
+{% if cookiecutter.include_code_scaffold == 'Yes' %}├── results
 │   ├── {{ cookiecutter.repo_name }}_logbook.org   <- Template for documenting experiments, analysis, insights, and ideas
 │   └── figs           <- Generated graphics and figures to be used in reporting and results documentation
 │
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
+├── src
+│   └── {{ cookiecutter.module_name }}   <- Source code for use in this project.
+│       │
+│       ├── __init__.py             <- Makes {{ cookiecutter.module_name }} a Python module
+│       │
+│       ├── config.py               <- Store useful variables and configuration
+│       │
+│       ├── dataset.py              <- Scripts to download or generate data
+│       │
+│       ├── features.py             <- Code to create features for modeling
+│       │
+│       ├── modeling
+│       │   ├── __init__.py
+│       │   ├── predict.py          <- Code to run model inference with trained models
+│       │   └── train.py            <- Code to train models
+│       │
+│       └── plots.py                <- Code to create visualizations
 │
-
-├── setup.cfg          <- Configuration file for flake8 and setuptools
-│
-└── {{ cookiecutter.module_name }}   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes {{ cookiecutter.module_name }} a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling
-    │   ├── __init__.py
-    │   ├── predict.py          <- Code to run model inference with trained models
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
+└── tests             <- Unit testing templates
+{% else %}└── results
+    ├── {{ cookiecutter.repo_name }}_logbook.org   <- Template for documenting experiments, analysis, insights, and ideas
+    └── figs           <- Generated graphics and figures to be used in reporting and results documentation
+{% endif %}
