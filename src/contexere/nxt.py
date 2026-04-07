@@ -6,6 +6,7 @@ import sys
 
 
 from contexere import __version__
+from contexere.clone import clone_file
 from contexere.collect import summary
 from contexere.conf import __CONTEXERE_CACHE_DB__, __COOKIECUTTER_PATH__
 from contexere.data.cache import fill_cache
@@ -47,6 +48,11 @@ def parse_args(args):
                         nargs='?',
                         type=Path,
                         default=Path.cwd())
+    parser.add_argument("-c_",
+                        "--clone",
+                        dest="clone",
+                        nargs=1,
+                        help="Clone file and commit cloned file to local repository.")
     parser.add_argument("-d",
                         "--database",
                         dest="database",
@@ -62,6 +68,12 @@ def parse_args(args):
         help="Project identifier for which the next research artefact GROUP will be suggested",
         action="store"
     )
+    parser.add_argument("-k",
+                        "--keywords",
+                        nargs="+",
+                        dest="keywords",
+                        help="Optional argument for --clone adding one or more keywords to the filename",
+                        action="store_true")
     parser.add_argument(
         "-l",
         "--local",
@@ -74,6 +86,12 @@ def parse_args(args):
                         dest="project",
                         help="Create new project directory structure",
                         action="store_true")
+    parser.add_argument("-r",
+                        "--reference",
+                        nargs="+",
+                        dest="reference",
+                        help="Optional argument for --clone referencing one or more search artefact groups",
+                        )
     parser.add_argument(
         "-s",
         "--summary",
@@ -142,9 +160,15 @@ def main(args):
         subprocess.call(["ccds", "--output-dir", args.path, str(__COOKIECUTTER_PATH__)])
     else:
         output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.local)
-        if args.time:
-            output += abbreviate_time(local=~args.utc)
-        print(output)
+        if args.clone:
+            path = clone_file(args.clone, output,
+                              reference=args.reference,
+                              keywords=args.keywords)
+            print(f"Clone {path} from {args.clone}.")
+        else:
+            if args.time:
+                output += abbreviate_time(local=~args.utc)
+            print(output)
 
     # print(args.project + abbreviate_date() + ending)
     _logger.info("Script ends here")
