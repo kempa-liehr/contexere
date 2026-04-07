@@ -47,13 +47,6 @@ def parse_args(args):
                         nargs='?',
                         type=Path,
                         default=Path.cwd())
-    parser.add_argument(
-        "-c",
-        "--cwd",
-        dest="cwd",
-        help="Inspect files in current working dir only",
-        action="store_true"
-    )
     parser.add_argument("-d",
                         "--database",
                         dest="database",
@@ -68,6 +61,13 @@ def parse_args(args):
         default='',
         help="Project identifier for which the next research artefact GROUP will be suggested",
         action="store"
+    )
+    parser.add_argument(
+        "-l",
+        "--local",
+        dest="local",
+        help="Inspect files in current working dir only",
+        action="store_true"
     )
     parser.add_argument("-p",
                         "--project",
@@ -135,13 +135,13 @@ def main(args):
         fill_cache(db, root=args.path)
     elif args.summary:
         try:
-            print(summary(args.path, recursive=~args.cwd))
+            print(summary(args.path, recursive=~args.local))
         except ValueError as error:
             _logger.warning(error)
     elif args.project:
         subprocess.call(["ccds", "--output-dir", args.path, str(__COOKIECUTTER_PATH__)])
     else:
-        output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.cwd)
+        output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.local)
         if args.time:
             output += abbreviate_time(local=~args.utc)
         print(output)
