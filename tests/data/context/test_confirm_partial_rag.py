@@ -44,3 +44,9 @@ def test_confirm_partial_date_rag_match():
     assert project is None
     assert date == '26pG'
     assert step == 'a'
+
+    match, project, date, step = confirm_partial_rag('q5a')
+    assert match is not None
+    assert project is None
+    assert date == 'q5'
+    assert step == 'a'
