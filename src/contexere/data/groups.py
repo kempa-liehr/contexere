@@ -1,12 +1,13 @@
 """
 Classes supporting the naming scheme.
 """
-
 from contexere.data.context import confirm_rag
 from contexere.scheme import decode_abbreviated_datetime
 
+
 class ResearchArtefactGroup:
     def __init__(self, identifier):
+        self._frozen = False
         match, self.project, self.date, self.step, self.remainder = confirm_rag(identifier)
         if not match:
             raise ValueError(f"Reference '{identifier}' is not a research artefact group identifier.")
@@ -16,7 +17,12 @@ class ResearchArtefactGroup:
         self.year = self.iso_date.year
         self.month = self.iso_date.month
         self.day = self.iso_date.day
-        self.__slots__ = ()
+        self._frozen = True
+
+    def __setattr__(self, name, value):
+        if getattr(self, "_frozen", False):
+            raise AttributeError(f"{self.__class__.__name__} is immutable")
+        super().__setattr__(name, value)
 
     def __str__(self):
         return self.identifier_

@@ -26,3 +26,9 @@ def test_common():
     assert 'ERP26r' == group.common('ERP26r9a')
     assert 'ERP26' == group.common('ERP26q9a')
     assert 'ERP' == group.common('ERP25q9a')
+
+def test_frozen_attributes():
+    group = ResearchArtefactGroup('ERP26rAa')
+    
+    with pytest.raises(AttributeError):
+        group.project = 'test'
