@@ -17,7 +17,6 @@ def next_rag(next_group, reference=None):
                 project = completed_ref[:-5]
             else:
                 completed_ref = ref
-            print(ref, completed_ref, project, date, step)
             if completed_ref == next_group:
                 raise ValueError(f"Reference '{ref}' overlaps with RAG '{next_group}'!")
             if not project in groups:
@@ -26,9 +25,6 @@ def next_rag(next_group, reference=None):
                 groups[project].append(completed_ref)
             common = commonprefix([next_group, completed_ref])
             abbreviations[completed_ref] = completed_ref[len(common):]
-        print('reference', reference)
-        print('groups', groups)
-        print('abbreviations', abbreviations)
         tokens = [rag] + concat_abbreviations(groups[this_project], abbreviations)
         del groups[this_project]
         if len(groups) > 0:
