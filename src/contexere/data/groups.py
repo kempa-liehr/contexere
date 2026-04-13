@@ -27,6 +27,18 @@ class ResearchArtefactGroup:
     def __str__(self):
         return self.identifier_
 
+    def __lt__(self, other):
+        return self.identifier_ < other.identifier_
+
+    def __gt__(self, other):
+        return self.identifier_ > other.identifier_
+
+    def __eq__(self, other):
+        return self.identifier_ == other.identifier_
+
+    def __hash__(self):
+        return id(self.identifier_)
+
     def common(self, other):
         if type(other) == str:
             other_group = ResearchArtefactGroup(other)
