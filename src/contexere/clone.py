@@ -1,10 +1,8 @@
-from os.path import commonprefix
-
 from contexere.data.context import confirm_rag, confirm_partial_rag
+from contexere.data.groups import ResearchArtefactGroup
 
 def next_rag(next_group, reference=None):
-    rag = next_group
-    this_project = next_group[:-5]
+    rag = ResearchArtefactGroup(next_group)
     if reference is not None:
         groups = {}
         abbreviations = dict()
@@ -13,20 +11,21 @@ def next_rag(next_group, reference=None):
             if not match:
                raise ValueError(f"Reference '{ref}' is not a partial research artefact group identifier'!")
             if project is None:
-                completed_ref = next_group[:-len(ref)] + ref
-                project = completed_ref[:-5]
+                completed_ref = ResearchArtefactGroup(next_group[:-len(ref)] + ref)
+                project = completed_ref.project
             else:
-                completed_ref = ref
-            if completed_ref == next_group:
+                completed_ref = ResearchArtefactGroup(ref)
+            print(completed_ref, rag)
+            if completed_ref == rag:
                 raise ValueError(f"Reference '{ref}' overlaps with RAG '{next_group}'!")
             if not project in groups:
                 groups[project] = list()
             if not completed_ref in groups[project]:
                 groups[project].append(completed_ref)
-            common = commonprefix([next_group, completed_ref])
-            abbreviations[completed_ref] = completed_ref[len(common):]
-        tokens = [rag] + concat_abbreviations(groups[this_project], abbreviations)
-        del groups[this_project]
+            common = rag.common(completed_ref)
+            abbreviations[completed_ref] = str(completed_ref)[len(common):]
+        tokens = [str(rag)] + concat_abbreviations(groups[rag.project], abbreviations)
+        del groups[rag.project]
         if len(groups) > 0:
             remaining_projects = list(groups.keys())
             print(reference, remaining_projects)
@@ -48,7 +47,7 @@ def next_filename(path, next_group, reference=None, keywords=None):
             reference = [original_ref]
         else:
             reference += [original_ref]
-    fn = next_rag(next_group, reference)
+    fn = str(next_rag(next_group, reference))
     if keywords is not None:
         fn = "__".join([fn] + keywords)
     return fn + path.suffix
