@@ -73,7 +73,7 @@ def parse_args(args):
                         nargs="+",
                         dest="keywords",
                         help="Optional argument for --clone adding one or more keywords to the filename",
-                        action="store_true")
+                        )
     parser.add_argument(
         "-l",
         "--local",
