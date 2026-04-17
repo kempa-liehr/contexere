@@ -86,7 +86,7 @@ def suggest_next(directory='.', project='', local=True, recursive=False):
     logging.info('Timeline' + str(list(timeline.keys())))
     today = abbreviate_date(local=local)
     if len(context) == 0:
-        if project is None:
+        if project == '':
             raise ValueError(f"No project files matching the naming scheme found in path {directory}"
                              "and option '--project' wasn't set.")
         else:
@@ -98,7 +98,7 @@ def suggest_next(directory='.', project='', local=True, recursive=False):
             match = schematic.match(latest[0])
         else:
             summary_df = summary(buffered_context=context)
-            if project is None:
+            if project == '':
                 summary_df.sort_values(by=['RAI'], ascending=False, inplace=True)
                 match = schematic.match(summary_df.index[0] + summary_df['Latest'].iloc[0])
                 logging.info("Continuing from latest RAI.")
