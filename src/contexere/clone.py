@@ -1,5 +1,9 @@
+import shutil
+
 from contexere.data.context import confirm_rag, confirm_partial_rag
 from contexere.data.groups import ResearchArtefactGroup
+from contexere.scheme import join_tokens
+
 
 def next_rag(next_group, reference=None):
     rag = ResearchArtefactGroup(next_group)
@@ -53,6 +57,17 @@ def next_filename(path, next_group, reference=None, keywords=None):
     return fn + path.suffix
 
 def clone_file(path, next_group, reference=None, keywords=None):
-    next_rag = '_'.join(next_group)
-    next_filename = '__'.join([next_group,
-                               keywords]) + path.suffix
+    message = f'Cloned from {path.name}.'
+    next_rag = join_tokens(next_group, reference)
+
+    if keywords is None:
+        keywords = path.stem.split('__')[1:]
+    print(next_rag, keywords)
+    filename = join_tokens(next_rag, keywords, glue='__') + path.suffix
+    new_path = path.parent / filename
+    if new_path.exists():
+        raise ValueError(f"File '{new_path}' already exists!")
+    shutil.copy(path, new_path)
+    return new_path, message
+
+

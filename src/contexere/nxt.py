@@ -159,9 +159,10 @@ def main(args):
     elif args.project:
         subprocess.call(["ccds", "--output-dir", args.path, str(__COOKIECUTTER_PATH__)])
     else:
-        output = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.local)
+        next_rag = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.local)
+        print(args.path, args.clone)
         if args.clone:
-            path = clone_file(args.clone, output,
+            path = clone_file(args.path / args.clone[0], next_rag,
                               reference=args.reference,
                               keywords=args.keywords)
             print(f"Clone {path} from {args.clone}.")

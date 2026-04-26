@@ -140,3 +140,16 @@ def next_month_start(this_year, this_month, datetime=True):
         return abbreviate_datetime(t)
     else:
         return abbreviate_date(t)
+
+
+def join_tokens(group, tokens=None, glue='_'):
+    if tokens is None:
+        result = group
+    else:
+        token_list = [group]
+        if type(tokens) == str:
+            token_list += [tokens]
+        else:
+            token_list += tokens
+        result = glue.join(token_list)
+    return result
