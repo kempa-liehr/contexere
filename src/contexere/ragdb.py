@@ -1,17 +1,14 @@
+"""CLI for the Research Artefact Group Database of the Contexere package"""
+
 import argparse
 import logging
 from pathlib import Path
-import subprocess
 import sys
 
-
 from contexere import __version__
-from contexere.clone import clone_file
-from contexere.collect import summary
-from contexere.conf import __CONTEXERE_CACHE_DB__, __COOKIECUTTER_PATH__
+from contexere.conf import __CONTEXERE_CACHE_DB__
 from contexere.data.cache import fill_cache
 from contexere.data.interfaces.contextdb import ContextDB
-from contexere.scheme import abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
 __copyright__ = "Andreas W. Kempa-Liehr"
@@ -30,7 +27,7 @@ def parse_args(args):
     Returns:
       :obj:`argparse.Namespace`: command line parameters namespace
     """
-    parser = argparse.ArgumentParser(description="Suggest name for research artefact")
+    parser = argparse.ArgumentParser(description="Research Artefact Group Database")
     parser.add_argument(
         "--version",
         action="version",
@@ -48,71 +45,12 @@ def parse_args(args):
                         nargs='?',
                         type=Path,
                         default=Path.cwd())
-    parser.add_argument("-c_",
-                        "--clone",
-                        dest="clone",
-                        nargs=1,
-                        help="Clone file and commit cloned file to local repository.")
     parser.add_argument("-d",
                         "--database",
                         dest="database",
                         help=f"Path to SQLite database (default: {__CONTEXERE_CACHE_DB__})",
                         type=Path,
                         default=__CONTEXERE_CACHE_DB__)
-    parser.add_argument(
-        "-g",
-        "--group",
-        dest="group",
-        type=str,
-        default='',
-        help="Project identifier for which the next research artefact GROUP will be suggested",
-        action="store"
-    )
-    parser.add_argument("-k",
-                        "--keywords",
-                        nargs="+",
-                        dest="keywords",
-                        help="Optional argument for --clone adding one or more keywords to the filename",
-                        )
-    parser.add_argument(
-        "-l",
-        "--local",
-        dest="local",
-        help="Inspect files in current working dir only",
-        action="store_true"
-    )
-    parser.add_argument("-p",
-                        "--project",
-                        dest="project",
-                        help="Create new project directory structure",
-                        action="store_true")
-    parser.add_argument("-r",
-                        "--reference",
-                        nargs="+",
-                        dest="reference",
-                        help="Optional argument for --clone referencing one or more search artefact groups",
-                        )
-    parser.add_argument(
-        "-s",
-        "--summary",
-        dest="summary",
-        help="Summarise files following the naming convention",
-        action="store_true"
-    )
-    parser.add_argument(
-        "-t",
-        "--time",
-        dest="time",
-        help="add time abbreviation",
-        action="store_true"
-    )  
-    parser.add_argument(
-        "-u",
-        "--utc",
-        dest="utc",
-        help="Generate timestamp with respect to UTC (default is local timezone)",
-        action="store_true"
-    )
     parser.add_argument(
         "-v",
         "--verbose",
@@ -151,25 +89,6 @@ def main(args):
     if args.init_cache:
         db = ContextDB(path=args.database)
         fill_cache(db, root=args.path)
-    elif args.summary:
-        try:
-            print(summary(args.path, recursive=~args.local))
-        except ValueError as error:
-            _logger.warning(error)
-    elif args.project:
-        subprocess.call(["ccds", "--output-dir", args.path, str(__COOKIECUTTER_PATH__)])
-    else:
-        next_rag = suggest_next(args.path, project=args.group, local=~args.utc, recursive=~args.local)
-        print(args.path, args.clone)
-        if args.clone:
-            path = clone_file(args.path / args.clone[0], next_rag,
-                              reference=args.reference,
-                              keywords=args.keywords)
-            print(f"Clone {path} from {args.clone}.")
-        else:
-            if args.time:
-                output += abbreviate_time(local=~args.utc)
-            print(output)
 
     # print(args.project + abbreviate_date() + ending)
     _logger.info("Script ends here")
@@ -184,14 +103,4 @@ def run():
 
 
 if __name__ == "__main__":
-    # ^  This is a guard statement that will prevent the following code from
-    #    being executed in the case someone imports this file instead of
-    #    executing it as a script.
-    #    https://docs.python.org/3/library/__main__.html
-
-    # After installing your project with pip, users can also run your Python
-    # modules as scripts via the ``-m`` flag, as defined in PEP 338::
-    #
-    #     python -m contexere.name
-    #
     run()

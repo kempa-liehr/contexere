@@ -36,13 +36,6 @@ def parse_args(args):
         action="version",
         version=f"contexere {__version__}",
     )
-    parser.add_argument(
-        "-i",
-        "--init-cache",
-        dest="init_cache",
-        help="Init context cache",
-        action="store_true"
-    )
     parser.add_argument(dest="path",
                         help="Path to folder with research artefacts (default: current working dir)",
                         nargs='?',
@@ -53,12 +46,6 @@ def parse_args(args):
                         dest="clone",
                         nargs=1,
                         help="Clone file and commit cloned file to local repository.")
-    parser.add_argument("-d",
-                        "--database",
-                        dest="database",
-                        help=f"Path to SQLite database (default: {__CONTEXERE_CACHE_DB__})",
-                        type=Path,
-                        default=__CONTEXERE_CACHE_DB__)
     parser.add_argument(
         "-g",
         "--group",
@@ -148,10 +135,7 @@ def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     _logger.debug("Start building context...")
-    if args.init_cache:
-        db = ContextDB(path=args.database)
-        fill_cache(db, root=args.path)
-    elif args.summary:
+    if args.summary:
         try:
             print(summary(args.path, recursive=~args.local))
         except ValueError as error:
@@ -184,14 +168,4 @@ def run():
 
 
 if __name__ == "__main__":
-    # ^  This is a guard statement that will prevent the following code from
-    #    being executed in the case someone imports this file instead of
-    #    executing it as a script.
-    #    https://docs.python.org/3/library/__main__.html
-
-    # After installing your project with pip, users can also run your Python
-    # modules as scripts via the ``-m`` flag, as defined in PEP 338::
-    #
-    #     python -m contexere.name
-    #
     run()
