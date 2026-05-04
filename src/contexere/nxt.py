@@ -180,8 +180,13 @@ def main(args):
         except ValueError as error:
             _logger.warning(error)
     else:
-        output = process_nxt(args)
-        print(output)
+        try:
+            output = process_nxt(args)
+        except ValueError as error:
+            print('ERROR: ', error)
+            sys.exit(1)
+        else:
+            print(output)
     _logger.info("Script ends here")
 
 
