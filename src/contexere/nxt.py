@@ -137,7 +137,7 @@ def process_nxt(args):
             try:
                 group = summary(Path.cwd(), recursive=recursive).index[0]
             except ValueError:
-                output = abbreviate_date() + 'a'
+                output = abbreviate_date(local=use_local_time) + 'a'
             else:
                 output = suggest_next(Path.cwd(), project=group, local=use_local_time, recursive=recursive)
         else:
