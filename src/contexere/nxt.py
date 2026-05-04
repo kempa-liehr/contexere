@@ -11,7 +11,7 @@ from contexere.conf import __CONTEXERE_CACHE_DB__, __COOKIECUTTER_PATH__
 from contexere.data.context import confirm_partial_rag, confirm_project_identifier, confirm_rag
 from contexere.data.cache import fill_cache
 from contexere.data.interfaces.contextdb import ContextDB
-from contexere.scheme import abbreviate_time, suggest_next
+from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
 __copyright__ = "Andreas W. Kempa-Liehr"
@@ -131,9 +131,15 @@ def process_nxt(args):
     """
     cloned = False
     if args.target is None:
-        group = args.group if args.group != '' else summary(Path.cwd(), recursive=~args.local).index[0]
-        output = suggest_next(Path.cwd(), project=group, local=~args.utc, recursive=~args.local)
-    else:
+        if args.group == '':
+            try:
+                group = summary(Path.cwd(), recursive=~args.local).index[0]
+            except ValueError:
+                output = abbreviate_date() + 'a'
+            else:
+                output = suggest_next(Path.cwd(), project=group, local=~args.utc, recursive=~args.local)
+        else:
+            output = suggest_next(Path.cwd(), project=args.group, local=~args.utc, recursive=~args.local)
         path = Path.cwd() / args.target
         if path.is_dir():
             group = args.group if args.group != '' else summary(path, recursive=~args.local).index[0]
