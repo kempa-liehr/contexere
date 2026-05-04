@@ -12,6 +12,7 @@ __pattern__ = re.compile(r'^(?P<project>[a-zA-Z]{2,})'
 __partial__ = re.compile(r'^(?:(?P<project>[a-zA-Z]{2,})(?=\d))?'
                          r'(?P<date>\d{2}[o-z][1-9A-V]|[o-z][1-9A-V]|[1-9A-V]|)'
                          r'(?P<step>[a-z])$')
+__project__ = re.compile(r'^(?P<project>[a-zA-Z]{2,})')
 
 def confirm_rag(token, pattern=__pattern__):
     match = pattern.match(token)
@@ -33,6 +34,14 @@ def confirm_partial_rag(token, pattern=__partial__):
     else:
         project, date, step = None, None, None
     return match, project, date, step
+
+def confirm_project_identifier(token, pattern=__project__):
+    match = pattern.match(token)
+    if match:
+        project = match.group('project')
+    else:
+        project = None
+    return match, project
 
 def index_file_artefact(db, filepath, project, date, step, remainder):
     project_id = db.upsert('Project', dict(Name=project))

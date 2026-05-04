@@ -32,7 +32,7 @@ def build_context(directory='.', project_filter='', recursive=False):
         file_iterator = Path(directory).glob(project_filter + '*')
     # Iterate over files and directories in the specified folder
     for path in file_iterator:
-        match = pattern.match(path.name)
+        match = pattern.match(path.stem)
         if match:
             project = match.group('project')
             date = match.group('date')
