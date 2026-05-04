@@ -130,25 +130,27 @@ def process_nxt(args):
     Process the command line arguments while choosing the most sensible action.
     """
     cloned = False
+    recursive = not args.local
+    use_local_time = not args.utc
     if args.target is None:
         if args.group == '':
             try:
-                group = summary(Path.cwd(), recursive=not args.local).index[0]
+                group = summary(Path.cwd(), recursive=recursive).index[0]
             except ValueError:
                 output = abbreviate_date() + 'a'
             else:
-                output = suggest_next(Path.cwd(), project=group, local=not args.utc, recursive=not args.local)
+                output = suggest_next(Path.cwd(), project=group, local=use_local_time, recursive=recursive)
         else:
-            output = suggest_next(Path.cwd(), project=args.group, local=not args.utc, recursive=not args.local)
+            output = suggest_next(Path.cwd(), project=args.group, local=use_local_time, recursive=recursive)
     else:  # interpret and consider context of  `target` CLI argument
         path = Path.cwd() / args.target
         if path.is_dir():
-            group = args.group if args.group != '' else summary(path, recursive=not args.local).index[0]
-            output = suggest_next(path, project=group, local=~args.utc, recursive=not args.local)
+            group = args.group if args.group != '' else summary(path, recursive=recursive).index[0]
+            output = suggest_next(path, project=group, local=~args.utc, recursive=recursive)
         elif path.exists():
             match, project, date, step, remainder = confirm_rag(path.stem)
             if match:
-                next_rag = suggest_next(path.parents[0], project=project, local=not args.utc, recursive=(not args.local))
+                next_rag = suggest_next(path.parents[0], project=project, local=use_local_time, recursive=recursive)
                 output, message = clone_file(path, next_rag, reference=args.reference, keywords=args.keywords)
                 cloned = True
             else:
@@ -157,12 +159,12 @@ def process_nxt(args):
         else:  # `target` CLI argument is neither folder nor file
             match, project = confirm_project_identifier(args.target)
             if match:
-                output = suggest_next(Path.cwd(), project=project, local=not args.utc, recursive=not args.local)
+                output = suggest_next(Path.cwd(), project=project, local=use_local_time, recursive=recursive)
             else:
                 raise ValueError(f"The argument `{args.target}` is neither a project identifier nor a filename.")
 
     if args.time and not cloned:
-        output += abbreviate_time(local=not args.utc)
+        output += abbreviate_time(local=use_local_time)
     return output
 
     return output
