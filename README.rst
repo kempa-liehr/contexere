@@ -20,9 +20,9 @@ are a powerful tool to document the connection between research artefacts, find 
 
 The following naming scheme has evolved over several years to track research artefacts of all kinds:
 
-The general scheme is: ``DSyymd[hMM]e[_x]__title``
+The general scheme is: ``PIyymd[hMM]e[_x]__title``
 
--   ``DS``: Project specific initials. Here, `DS` stands for *Data Science*.
+-   ``PI``: [a-zA-Z]{2,} is the project identifier, which consists of at least two letters.
 -   ``yy``: [0-9][0-9] are the last two digits of the years in the 21st century. I won't live beyond that. So, I do not care for following centuries.
 -   ``m``: [o-z] these letters map to the respective months.
 -   ``d``: [1-9,A-V] represent the 31 days of a month. Digits and upper-case characters have approximately the same height, such that this element gives a visual structure to the name, which divides the date from the daily counter.
