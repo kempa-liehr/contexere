@@ -10,6 +10,16 @@ def test_confirm_partial_rag_match_complete():
     match, project, date, step = confirm_partial_rag('ERP26pGa_')
     assert match is None
 
+def test_confirm_partial_rag_match_complete_lower_case():
+    match, project, date, step = confirm_partial_rag('erp26pGa')
+    assert match is not None
+    assert project == 'erp'
+    assert date == '26pG'
+    assert step == 'a'
+
+    match, project, date, step = confirm_partial_rag('ERP26pGa_')
+    assert match is None
+
 def test_confirm_partial_rag_match_counter():
     match, project, date, step = confirm_partial_rag('a')
     assert match is not None

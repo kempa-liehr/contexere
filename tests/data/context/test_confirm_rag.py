@@ -15,6 +15,21 @@ def test_confirm_rag_match():
     assert step == 'a'
     assert keywords is None
 
+def test_confirm_rag_match_lower_case():
+    match, project, date, step, keywords = confirm_rag('erp26pGa')
+    assert match is not None
+    assert project == 'erp'
+    assert date == '26pG'
+    assert step == 'a'
+    assert keywords is None
+
+    match, project, date, step, keywords = confirm_rag('ERP26pGa_')
+    assert match is not None
+    assert project == 'ERP'
+    assert date == '26pG'
+    assert step == 'a'
+    assert keywords is None
+
 def test_confirm_rag_match_with_dependency():
     match, project, date, step, remainder = confirm_rag('ERP26pGa_9a__test.ipynb')
     assert match is not None
