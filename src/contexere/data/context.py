@@ -5,7 +5,7 @@ from typing import Any
 from contexere.conf import __GENERATORS__
 
 # Define the scheme with named groups
-__pattern__ = re.compile(r'^(?P<project>[a-zA-Z]+)'
+__pattern__ = re.compile(r'^(?P<project>[a-zA-Z]{2,})'
                          r'(?P<date>[0-9]{2}[o-z][1-9A-V])'
                          r'(?P<step>[a-z])'
                          r'(?:(?:_{1,2}| )(?P<kwds>.+)|_{1,2})?$')
