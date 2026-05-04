@@ -18,12 +18,12 @@ def test_no_context(temp_dir):
     args = parse_args([])
     os.chdir(temp_dir)
     output = process_nxt(args)
-    assert output == abbreviate_date(local=True) +'a'
+    assert output == abbreviate_date(local=True) + 'a'
 
     args = parse_args(['--group', 'test'])
     os.chdir(temp_dir)
     output = process_nxt(args)
-    assert output == 'test' + abbreviate_date(local=True) +'a'
+    assert output == 'test' + abbreviate_date(local=True) + 'a'
 
 def test_one_old_file(temp_dir):
     fill_folder(temp_dir, 'notes.txt', 'ERP26pBa_example.txt')
