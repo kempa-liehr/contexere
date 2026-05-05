@@ -1,9 +1,7 @@
 import shutil
 
-from contexere.data.context import confirm_rag, confirm_partial_rag
-from contexere.data.groups import ResearchArtefactGroup
+from contexere.data.groups import ResearchArtefactGroup, compile_references
 from contexere.scheme import join_tokens
-
 
 def next_rag(next_group, reference=None):
     rag = ResearchArtefactGroup(next_group)
@@ -56,9 +54,12 @@ def next_filename(path, next_group, reference=None, keywords=None):
         fn = "__".join([fn] + keywords)
     return fn + path.suffix
 
-def clone_file(path, next_group, reference=None, keywords=None):
+
+def clone_file(path, next_group, references=None, keywords=None):
     message = f'Cloned from {path.name}.'
-    next_rag = join_tokens(next_group, reference)
+    next_rag = join_tokens(next_group,
+                           compile_references(next_group, references)
+                           )
 
     if keywords is None:
         keywords = path.stem.split('__')[1:]
