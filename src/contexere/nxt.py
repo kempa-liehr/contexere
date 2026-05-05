@@ -127,7 +127,6 @@ def setup_logging(loglevel):
     )
 
 def reference_nxt(input_references, parent_rag):
-    print(input_references)
     if input_references is None:
         references = []
     elif input_references is True:
@@ -167,7 +166,7 @@ def process_nxt(args):
                 reference = reference_nxt(args.reference, parent_rag)
                 next_rag = suggest_next(path.parents[0],
                                         project=next_project, local=use_local_time, recursive=recursive)
-                output, message = clone_file(path, next_rag, references=reference, keywords=keywords)
+                _, output = clone_file(path, next_rag, references=reference, keywords=keywords)
                 cloned = True
             else:
                 fn = path.name
@@ -181,8 +180,6 @@ def process_nxt(args):
 
     if args.time and not cloned:
         output += abbreviate_time(local=use_local_time)
-    return output
-
     return output
 
 

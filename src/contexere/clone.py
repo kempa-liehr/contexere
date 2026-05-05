@@ -1,4 +1,5 @@
 import shutil
+import subprocess
 
 from contexere.data.context import confirm_partial_rag, confirm_rag
 from contexere.data.groups import ResearchArtefactGroup, compile_references
@@ -55,6 +56,20 @@ def next_filename(path, next_group, reference=None, keywords=None):
         fn = "__".join([fn] + keywords)
     return fn + path.suffix
 
+def add_to_git_repository(path, message):
+    try:
+        repo_root = subprocess.check_output(["git", "rev-parse", "--show-toplevel"],
+                                            cwd=path.parent, stderr=subprocess.DEVNULL, text=True,
+                                            ).strip()
+    except subprocess.CalledProcessError:
+        output = f'Cloned file {path} is not inside a git repository.'
+    else:
+        subprocess.check_call(["git", "add", str(path.relative_to(repo_root))],
+                              cwd=repo_root)
+        subprocess.check_call(["git", "commit", "-m", '"' + message + '"'],
+                              cwd=repo_root)
+        output = f'Added cloned file {path} to git repository.'
+    return output
 
 def clone_file(path, next_group, references=None, keywords=None):
     message = f'Cloned from {path.name}.'
@@ -69,12 +84,14 @@ def clone_file(path, next_group, references=None, keywords=None):
 
     if keywords is None:
         keywords = path.stem.split('__')[1:]
-    print(next_rag, keywords)
     filename = join_tokens(next_rag, keywords, glue='__') + path.suffix
     new_path = path.parent / filename
     if new_path.exists():
         raise ValueError(f"File '{new_path}' already exists!")
     shutil.copy(path, new_path)
-    return new_path, message
+
+    output = add_to_git_repository(new_path, message)
+
+    return new_path, output
 
 
