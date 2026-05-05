@@ -150,8 +150,9 @@ def process_nxt(args):
         elif path.exists():
             match, project, date, step, remainder = confirm_rag(path.stem)
             if match:
+                keywords = args.keywords if args.keywords is not None else remainder
                 next_rag = suggest_next(path.parents[0], project=project, local=use_local_time, recursive=recursive)
-                output, message = clone_file(path, next_rag, reference=args.reference, keywords=args.keywords)
+                output, message = clone_file(path, next_rag, reference=args.reference, keywords=keywords)
                 cloned = True
             else:
                 fn = path.name
