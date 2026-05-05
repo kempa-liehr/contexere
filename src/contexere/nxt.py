@@ -167,7 +167,7 @@ def process_nxt(args):
                 reference = reference_nxt(args.reference, parent_rag)
                 next_rag = suggest_next(path.parents[0],
                                         project=next_project, local=use_local_time, recursive=recursive)
-                output, message = clone_file(path, next_rag, reference=reference, keywords=keywords)
+                output, message = clone_file(path, next_rag, references=reference, keywords=keywords)
                 cloned = True
             else:
                 fn = path.name
