@@ -1,7 +1,7 @@
 """
 Classes supporting the naming scheme.
 """
-from contexere.data.context import confirm_rag
+from contexere.data.context import confirm_rag, confirm_partial_rag
 from contexere.scheme import decode_abbreviated_datetime
 
 
@@ -56,3 +56,46 @@ class ResearchArtefactGroup:
                         if self.step == other_group.step:
                             common += self.step
         return common
+
+
+def compile_references(next_rag, references):
+    rag = ResearchArtefactGroup(next_rag)
+    same_project = []
+    other_projects = {}
+    for ref in references:
+        match, par_project, par_date, par_step = confirm_partial_rag(ref)
+        if match:
+            if par_project is None or par_date is None:
+                match, par_project, par_date, par_step = confirm_partial_rag(rag.identifier_[:-len(ref)] + ref)
+        if match is None:
+            raise ValueError(f'Reference `{ref}` is neither a full '
+                             'nor a partial research artefact group identifier!')
+        rag_ref = ResearchArtefactGroup(par_project + par_date + par_step)
+        if rag.project == rag_ref.project:
+            same_project.append(rag_ref)
+        elif rag_ref.project in other_projects:
+            other_projects[rag_ref.project].append(rag_ref)
+        else:
+            other_projects[rag_ref.project] = [rag_ref]
+    same_project.sort(reverse=True)
+    abbreviate_refs = []
+    for rag_ref in same_project:
+        if rag == rag_ref or rag < rag_ref:
+            raise ValueError(f'RAG `{rag}` was created before reference `{rag_ref}`!')
+        abbreviate_refs.append(rag_ref.identifier_[len(rag.common(rag_ref)):])
+    other_project_identifier = list(other_projects.keys())
+    other_project_identifier.sort()
+    for project in other_project_identifier:
+        other_projects[project].sort(reverse=True)
+        first_rag = other_projects[project].pop(0)
+        if rag.iso_date < first_rag.iso_date:
+            raise ValueError(f'RAG `{rag}` was created before reference `{first_rag}`!')
+        abbreviate_refs.append(first_rag.identifier_)
+        for rag_ref in other_projects[project]:
+            if rag.iso_date < rag_ref.iso_date:
+                raise ValueError(f'RAG `{rag}` was created before reference `{rag_ref}`!')
+            abbreviate_refs.append(first_rag.identifier_[len(first_rag.common(rag_ref)):])
+    return abbreviate_refs
+
+if __name__ == '__main__':
+    compile_references('ERP26s5b', ['a', 'r4b', 'BBC26s5a', 'ABC26s6a'])
