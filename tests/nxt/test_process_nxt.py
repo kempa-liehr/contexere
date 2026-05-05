@@ -78,3 +78,13 @@ def test_clone_file_two_keywords(temp_dir):
     expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__TestA__2nd.txt')
     assert output == expected_output
     assert expected_output.exists()
+
+def test_clone_file_two_keywords(temp_dir):
+    fn = 'ERP' + abbreviate_date(local=True) + 'a__example.txt'
+    fill_folder(temp_dir, 'notes.txt', fn)
+    args = parse_args([fn, '--keywords', 'TestA 2nd'])
+    os.chdir(temp_dir)
+    output = process_nxt(args)
+    expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__TestA_2nd.txt')
+    assert output == expected_output
+    assert expected_output.exists()
