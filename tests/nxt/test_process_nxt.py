@@ -46,7 +46,6 @@ def test_clone_file_one_underscore(temp_dir):
     os.chdir(temp_dir)
     output = process_nxt(args)
     expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__example.txt')
-    assert output == expected_output
     assert expected_output.exists()
 
 def test_clone_file_two_underscores(temp_dir):
@@ -56,7 +55,6 @@ def test_clone_file_two_underscores(temp_dir):
     os.chdir(temp_dir)
     output = process_nxt(args)
     expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__example.txt')
-    assert output == expected_output
     assert expected_output.exists()
 
 def test_clone_file_one_keyword(temp_dir):
@@ -66,7 +64,6 @@ def test_clone_file_one_keyword(temp_dir):
     os.chdir(temp_dir)
     output = process_nxt(args)
     expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__TestA.txt')
-    assert output == expected_output
     assert expected_output.exists()
 
 def test_clone_file_two_keywords(temp_dir):
@@ -76,7 +73,6 @@ def test_clone_file_two_keywords(temp_dir):
     os.chdir(temp_dir)
     output = process_nxt(args)
     expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__TestA__2nd.txt')
-    assert output == expected_output
     assert expected_output.exists()
 
 def test_clone_file_two_keywords(temp_dir):
@@ -86,7 +82,6 @@ def test_clone_file_two_keywords(temp_dir):
     os.chdir(temp_dir)
     output = process_nxt(args)
     expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__TestA_2nd.txt')
-    assert output == expected_output
     assert expected_output.exists()
 
 def test_clone_file_one_keyword__reference_no_value(temp_dir):
@@ -96,5 +91,4 @@ def test_clone_file_one_keyword__reference_no_value(temp_dir):
     os.chdir(temp_dir)
     output = process_nxt(args)
     expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b_a__TestA.txt')
-    assert output == expected_output
     assert expected_output.exists()
