@@ -65,9 +65,12 @@ def parse_args(args):
                         action="store_true")
     parser.add_argument("-r",
                         "--reference",
-                        nargs="+",
+                        nargs="?",
+                        const=True,
+                        default=None,
                         dest="reference",
-                        help="Optional argument for --clone referencing one or more search artefact groups",
+                        help="Optional argument indicating reference of cloned file if used without arguments or "
+                             "accepting comma separated list of references.",
                         )
     parser.add_argument(
         "-s",
@@ -125,6 +128,16 @@ def setup_logging(loglevel):
         level=loglevel, stream=sys.stdout, format=logformat, datefmt="%Y-%m-%d %H:%M:%S"
     )
 
+def reference_nxt(input_references, parent_rag):
+    print(input_references)
+    if input_references is None:
+        references = []
+    elif input_references is True:
+        references = [parent_rag]
+    else:
+        references = input_references.split(',')
+    return references
+
 def process_nxt(args):
     """
     Process the command line arguments while choosing the most sensible action.
@@ -150,9 +163,13 @@ def process_nxt(args):
         elif path.exists():
             match, project, date, step, remainder = confirm_rag(path.stem)
             if match:
+                parent_rag = project + date + step
+                next_project = args.group if args.group != '' else project
                 keywords = args.keywords if args.keywords is not None else remainder
-                next_rag = suggest_next(path.parents[0], project=project, local=use_local_time, recursive=recursive)
-                output, message = clone_file(path, next_rag, reference=args.reference, keywords=keywords)
+                reference = reference_nxt(args.reference, parent_rag)
+                next_rag = suggest_next(path.parents[0],
+                                        project=next_project, local=use_local_time, recursive=recursive)
+                output, message = clone_file(path, next_rag, reference=reference, keywords=keywords)
                 cloned = True
             else:
                 fn = path.name
