@@ -6,13 +6,15 @@ import pytest
 import sys
 
 from contexere.nxt import main
+from contexere.scheme import abbreviate_date
+
 
 @pytest.fixture()
 def temp_dir(tmp_path_factory):
     base = tmp_path_factory.mktemp("session_data")
     return base
 
-def test_project_and_summary(monkeypatch, temp_dir):
+def test_project_and_summary(monkeypatch, capsys, temp_dir):
     os.chdir(temp_dir)
     user_input = (
         "Example Research Project\n"  # project_name
@@ -42,6 +44,13 @@ def test_project_and_summary(monkeypatch, temp_dir):
     monkeypatch.setattr(subprocess, "call", fake_subprocess_call)
 
     main(["--project"])
-
     example_file = Path(temp_dir) / 'ERP/Makefile'
     assert example_file.exists()
+
+    main(["--summary"])
+    captured_summary = capsys.readouterr().out.splitlines()[-3:]
+
+    expected =  ['Project RAGs Files Latest',
+                 'ERP        1     1  ' + abbreviate_date(local=True) + 'a',
+                 'KM         1     1  26qGb']
+    assert expected == captured_summary
