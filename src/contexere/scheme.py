@@ -142,14 +142,14 @@ def next_month_start(this_year, this_month, datetime=True):
         return abbreviate_date(t)
 
 
-def join_tokens(group, tokens=None, glue='_'):
+def join_tokens(group, tokens=None, glue='_', whitespace_replace='_'):
     if tokens is None:
         result = group
     else:
         token_list = [group]
         if type(tokens) == str:
-            token_list += [tokens]
+            token_list += [tokens.replace(' ', whitespace_replace)]
         else:
-            token_list += tokens
+            token_list += [t.replace(' ', whitespace_replace) for t in tokens]
         result = glue.join(token_list)
     return result
