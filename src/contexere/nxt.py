@@ -185,12 +185,13 @@ def process_nxt(args):
 def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
+    path = Path.cwd() if args.target is None else args.target
     if args.project:
-        subprocess.call(["ccds", "--output-dir", args.path, str(__COOKIECUTTER_PATH__)])
+        subprocess.call(["ccds", "--output-dir", path, str(__COOKIECUTTER_PATH__)])
     elif args.summary:
         _logger.debug("Start building context ...")
         try:
-            print(summary(args.path, recursive=~args.local))
+            print(summary(path, recursive=~args.local))
         except ValueError as error:
             _logger.warning(error)
     else:
