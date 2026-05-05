@@ -39,12 +39,42 @@ def test_recent_file(temp_dir):
     output = process_nxt(args)
     assert output == 'ERP' + abbreviate_date(local=True) +'b'
 
-def test_clone_file(temp_dir):
+def test_clone_file_one_underscore(temp_dir):
     fn = 'ERP' + abbreviate_date(local=True) + 'a_example.txt'
     fill_folder(temp_dir, 'notes.txt', fn)
     args = parse_args([fn])
     os.chdir(temp_dir)
     output = process_nxt(args)
-    expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b_example.txt')
+    expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__example.txt')
+    assert output == expected_output
+    assert expected_output.exists()
+
+def test_clone_file_two_underscores(temp_dir):
+    fn = 'ERP' + abbreviate_date(local=True) + 'a__example.txt'
+    fill_folder(temp_dir, 'notes.txt', fn)
+    args = parse_args([fn])
+    os.chdir(temp_dir)
+    output = process_nxt(args)
+    expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__example.txt')
+    assert output == expected_output
+    assert expected_output.exists()
+
+def test_clone_file_one_keyword(temp_dir):
+    fn = 'ERP' + abbreviate_date(local=True) + 'a__example.txt'
+    fill_folder(temp_dir, 'notes.txt', fn)
+    args = parse_args([fn, '--keywords', 'TestA'])
+    os.chdir(temp_dir)
+    output = process_nxt(args)
+    expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__TestA.txt')
+    assert output == expected_output
+    assert expected_output.exists()
+
+def test_clone_file_two_keywords(temp_dir):
+    fn = 'ERP' + abbreviate_date(local=True) + 'a__example.txt'
+    fill_folder(temp_dir, 'notes.txt', fn)
+    args = parse_args([fn, '--keywords', 'TestA', '2nd'])
+    os.chdir(temp_dir)
+    output = process_nxt(args)
+    expected_output = temp_dir / ('ERP' + abbreviate_date(local=True) + 'b__TestA__2nd.txt')
     assert output == expected_output
     assert expected_output.exists()
