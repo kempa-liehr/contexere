@@ -191,7 +191,7 @@ def main(args):
     elif args.summary:
         _logger.debug("Start building context ...")
         try:
-            print(summary(path, recursive=~args.local))
+            print(summary(path, recursive=not args.local))
         except ValueError as error:
             _logger.warning(error)
     else:
