@@ -7,10 +7,8 @@ import sys
 from contexere import __version__
 from contexere.clone import clone_file
 from contexere.collect import summary
-from contexere.conf import __CONTEXERE_CACHE_DB__, __COOKIECUTTER_PATH__
-from contexere.data.context import confirm_partial_rag, confirm_project_identifier, confirm_rag
-from contexere.data.cache import fill_cache
-from contexere.data.interfaces.contextdb import ContextDB
+from contexere.conf import __COOKIECUTTER_PATH__
+from contexere.data.context import confirm_project_identifier, confirm_rag
 from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
