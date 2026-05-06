@@ -68,7 +68,7 @@ def add_to_git_repository(path, message):
                               cwd=repo_root)
         subprocess.check_call(["git", "commit", "-m", message],
                               cwd=repo_root)
-        output = f'Added cloned file {path} to git repository.'
+        output = f'Added cloned file {path.name} to the git repository.'
     return output
 
 def clone_file(path, next_group, references=None, keywords=None):
