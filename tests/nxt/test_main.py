@@ -1,9 +1,7 @@
-import io
 import os
 import subprocess
 from pathlib import Path
 import pytest
-import sys
 
 from contexere.nxt import main
 from contexere.scheme import abbreviate_date

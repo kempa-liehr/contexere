@@ -113,6 +113,26 @@ def upsert_keyword(db, first, keyword_ids, keyword_index, rag_id):
     return kwd_id
 
 
+def clean_up_remainder(remainder):
+    """
+    The remainder is the tail of a filename stem after the first underscore.
+    It might contain references, which might have to be removed.
+    """
+    parse_dependencies = True
+    tokens = list(remainder.split('__'))
+    keywords = list()
+    while len(tokens) > 0:
+        token = tokens.pop(0)
+        if len(token) > 0:
+            if parse_dependencies:
+                match, par_project, par_date, par_step = confirm_partial_rag(token.split('_')[0])
+                if match:
+                    continue
+                else:
+                    parse_dependencies = False
+            keywords.append(token)
+    return '__'.join(keywords)
+
 if __name__ == '__main__':
     from pathlib import Path
     from contexere.data.interfaces.contextdb import ContextDB
