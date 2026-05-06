@@ -39,6 +39,14 @@ def test_one_old_file_with_reference(temp_dir):
     print(list(temp_dir.glob('*')))
     assert (temp_dir / (rag + '_25pBa__testA__testB.txt')).exists()
 
+def test_one_old_file_with_reference_and_whitespace(temp_dir):
+    fill_folder(temp_dir, 'notes.txt', 'ERP25pBa__example.txt')
+    rag = 'ERP' + abbreviate_date(local=True) + 'a'
+    path_to_clone, message = clone_file(temp_dir / 'ERP25pBa__example.txt', rag,
+                                        references='25pBa', keywords=['test A', 'testB'])
+    print(list(temp_dir.glob('*')))
+    assert (temp_dir / (rag + '_25pBa__test_A__testB.txt')).exists()
+
 def test_one_old_file_having_reference(temp_dir):
     fill_folder(temp_dir, 'notes.txt', 'ERP25pBa_Aa__example.txt')
     rag = 'ERP' + abbreviate_date(local=True) + 'a'
