@@ -4,7 +4,7 @@
 \usepackage{copyrightbox}
 \usepackage{graphics}
 {% raw %}
-\graphicspath{{../references/}{../results/figs}}
+\graphicspath{{../references/figs}{../results/figs}}
 {% endraw %}
 \usepackage{tabularx}
 \usepackage{url}
@@ -25,8 +25,7 @@
 \chapter{Overview}
 \section{Naming scheme}
 The \texttt{contexere} package provides tools for using an efficient naming convention for research artefacts \cite{Contexere}. 
-Its command line interface is shown in Fig.~\ref{fig:cli}.
-The date abbreviations for the naming scheme are summarised in Fig.~\ref{fig:date_abbreviations}.
+Its date abbreviations for the naming scheme are summarised in Fig.~\ref{fig:date}.
 
 The scheme for the identifiers of research artefact groups is \texttt{PIDyymDc[\_link[\_link]]}:
 \begin{description}
@@ -42,37 +41,14 @@ The scheme for the identifiers of research artefact groups is \texttt{PIDyymDc[\
 \begin{figure}
 \begin{center}
 \copyrightbox{
-\includegraphics[width=\textwidth]{KM26qGb_a__nxt_cli.png}
+\includegraphics[width=\textwidth]{KM26oOa__contexere_dates.png}
 }
-{\texttt{KM26qGb\_a\_\_nxt\_cli.png}}
+{\texttt{KM26oOa\_\_contexere\_dates.png}}
 \end{center}
-\caption{Command line interface of the ~nxt~ command provided by the Python package ~contexere~.}
-\label{fig:cli}
+\caption{Screenshot of the date abbreviations used for the naming scheme of the \texttt{contexere} package.}
+\label{fig:date}
 \end{figure}
 
-\begin{table}[t] 
-\caption{\label{tab:date}Month and day abbreviations for research artefact groups. The month-day abbreviation \texttt{md} is appended to the truncated two-digit year abbreviation \texttt{yy} \cite[p. 12]{Perreault2011_vCard}. E.g., the code \texttt{26q1} represents the date 2026-03-01 with just four key strokes.}
-\begin{tabularx}{\textwidth}{cccccccc}
-  \toprule
-  \multicolumn{2}{c}{Months} & \multicolumn{2}{c}{Days 1--10}
-  & \multicolumn{2}{c}{Days 11-20} & \multicolumn{2}{c}{Days 21-31} \\
-\texttt{m} & Month & \texttt{D} & day & \texttt{D} & day & \texttt{D} & day\\
-\midrule
-\texttt{o} & January & \texttt{1} & 1 & \texttt{B} & 11 & \texttt{L} & 21\\
-\texttt{p} & February & \texttt{2} & 2 & \texttt{C} & 12 & \texttt{M} & 22\\
-\texttt{q} & March & \texttt{3} & 3 & \texttt{D} & 13 & \texttt{N} & 23\\
-\texttt{r} & April & \texttt{4} & 4 & \texttt{E} & 14 & \texttt{O} & 24\\
-\texttt{s} & May & \texttt{5} & 5 & \texttt{F} & 15 & \texttt{P} & 25\\
-\texttt{t} & June & \texttt{6} & 6 & \texttt{G} & 16 & \texttt{Q} & 26\\
-\texttt{u} & July & \texttt{7} & 7 & \texttt{H} & 17 & \texttt{R} & 27\\
-\texttt{v} & August & \texttt{8} & 8 & \texttt{I} & 18 & \texttt{S} & 28\\
-\texttt{w} & September & \texttt{9} & 9 & \texttt{J} & 19 & \texttt{T} & 29\\
-\texttt{x} & October & \texttt{A} & 10 & \texttt{K} & 20 & \texttt{U} & 30\\
-\texttt{y} & November &  &  &  &  & \texttt{V} & 31\\
-\texttt{z} & December &  &  &  &  &  & \\
-\bottomrule
-\end{tabularx}
-\end{table}
 
 {% raw %}
 \bibliographystyle{plain} % 
