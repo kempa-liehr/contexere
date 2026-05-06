@@ -8,7 +8,7 @@ from contexere import __version__
 from contexere.clone import clone_file
 from contexere.collect import summary
 from contexere.conf import __COOKIECUTTER_PATH__
-from contexere.data.context import confirm_project_identifier, confirm_rag
+from contexere.data.context import clean_up_remainder, confirm_project_identifier, confirm_rag
 from contexere.scheme import abbreviate_date, abbreviate_time, suggest_next
 
 __author__ = "Andreas W. Kempa-Liehr"
@@ -162,7 +162,7 @@ def process_nxt(args):
             if match:
                 parent_rag = project + date + step
                 next_project = args.group if args.group != '' else project
-                keywords = args.keywords if args.keywords is not None else remainder
+                keywords = args.keywords if args.keywords is not None else clean_up_remainder(remainder)
                 reference = reference_nxt(args.reference, parent_rag)
                 next_rag = suggest_next(path.parents[0],
                                         project=next_project, local=use_local_time, recursive=recursive)
