@@ -14,6 +14,7 @@ from ccds.hook_utils.dependencies import (
     write_dependencies,
     write_python_version,
 )
+basic.append('seaborn')
 packages.append('contexere')
 
 #
