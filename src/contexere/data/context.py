@@ -32,7 +32,7 @@ def artefact_name(*keywords, **parameters):
 
     file_stem = '__'.join([notebookID] +
                          [str(k).replace(' ', '_') for k in keywords] +
-                         [f'{str(key).replace(' ', '')}_{str(value).replace(' ', '')}'
+                         [str(key).replace(' ', '') + '_' + str(value).replace(' ', '')
                           for key, value in parameters.items()])
     return file_stem
 
