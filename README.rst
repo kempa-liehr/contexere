@@ -76,43 +76,34 @@ Usage
 =====
 The project provides the command line tool ``nxt``::
 
-    usage: nxt [-h] [--version] [-i] [-c] [-d DATABASE] [-g GROUP] [-p] [-s] [-t]
-           [-u] [-v] [-vv]
-           [path]
+    usage: nxt [-h] [--version] [-g GROUP] [-k KEYWORDS [KEYWORDS ...]] [-l] [-p] [-r [REFERENCE]] [-s] [-u] [-v] [-vv] [target]
 
     Suggest name for research artefact
 
     positional arguments:
-      path                  Path to folder with research artefacts (default:
-                            current working dir)
+      target                Either a project identifier, filename, or folder
 
     options:
       -h, --help            show this help message and exit
       --version             show program's version number and exit
-      -i, --init-cache      Init context cache
-      -c, --cwd             Inspect files in current working dir only
-      -d, --database DATABASE
-                            Path to SQLite database (default:
-                            /Users/akem134/.contexere/context.db)
-      -g, --group GROUP     Project identifier for which the next research
-                            artefact GROUP will be suggested
+      -g, --group GROUP     Project identifier for which the next research artefact GROUP will be suggested
+      -k, --keywords KEYWORDS [KEYWORDS ...]
+                            Optional argument for --clone adding one or more keywords to the filename
+      -l, --local           Inspect files in current working dir only
       -p, --project         Create new project directory structure
+      -r, --reference [REFERENCE]
+                            Optional argument indicating reference of cloned file if used without arguments or accepting comma
+                            separated list of references.
       -s, --summary         Summarise files following the naming convention
-      -t, --time            add time abbreviation
-      -u, --utc             Generate timestamp with respect to UTC (default is
-                            local timezone)
+      -u, --utc             Generate timestamp with respect to UTC (default is local timezone)
       -v, --verbose         set loglevel to INFO
       -vv, --very-verbose   set loglevel to DEBUG
 
-Calling the tool without any arguments returns the date abbreviation of today::
+Calling the tool without any arguments returns the date abbreviation of today appended by the first daily counter (``a``)::
 
     nxt
-    24xV
+    25s7a
 
-Adding the option ``--time`` also abbreviates the actual time::
-
-    nxt --time
-    24xVj36
 
     
 References
