@@ -170,8 +170,6 @@ def process_nxt(args):
                 output = suggest_next(Path.cwd(), project=project, local=use_local_time, recursive=recursive)
             else:
                 raise ValueError(f"The argument `{args.target}` is neither a project identifier nor a filename.")
-    if args.time and not cloned:
-        output += abbreviate_time(local=use_local_time)
     return output
 
 
