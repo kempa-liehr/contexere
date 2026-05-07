@@ -15,15 +15,26 @@ __partial__ = re.compile(r'^(?:(?P<project>[a-zA-Z]{2,})(?=\d))?'
 __project__ = re.compile(r'^(?P<project>[a-zA-Z]{2,})')
 
 
-def get_filename(*keywords, **parameters):
+def get_file_stem(*keywords, **parameters):
+    """
+    Build file stem from the filename of the executing script and optional keywords and dictionary items.
+
+    The filename of the executing script is found automatically and broken down into tokens separated by '__'.
+    The first token is concatenated with the provided keywords and the key-value pairs of the dictionary
+    using '__' as separator.
+
+    Whitespaces of keywords are replaced by underscores '_'.
+
+    Whitespaces of keys or values are removed. Key-value pairs are concatenated by an underscore '_'.
+    """
     _, name = get_execution_context()
     notebookID = name.split('__')[0]
 
-    filestem = '__'.join([notebookID] +
+    file_stem = '__'.join([notebookID] +
                          [str(k).replace(' ', '_') for k in keywords] +
                          [f'{str(key).replace(' ', '')}_{str(value).replace(' ', '')}'
                           for key, value in parameters.items()])
-    return filestem
+    return file_stem
 
 def confirm_rag(token, pattern=__pattern__):
     match = pattern.match(token)
