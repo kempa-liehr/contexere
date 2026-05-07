@@ -15,7 +15,7 @@ __partial__ = re.compile(r'^(?:(?P<project>[a-zA-Z]{2,})(?=\d))?'
 __project__ = re.compile(r'^(?P<project>[a-zA-Z]{2,})')
 
 
-def get_file_stem(*keywords, **parameters):
+def artefact_name(*keywords, **parameters):
     """
     Build file stem from the filename of the executing script and optional keywords and dictionary items.
 
