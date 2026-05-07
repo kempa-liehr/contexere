@@ -42,3 +42,10 @@ def get_execution_context():
     except NameError:
         # Interactive Python shell or edge case
         return "script", None
+
+if __name__ == "__main__":
+    context, name = get_execution_context()
+    if context == "notebook":
+        print(f"Running in notebook: {name}")
+    else:
+        print(f"Running as script: {name}")
