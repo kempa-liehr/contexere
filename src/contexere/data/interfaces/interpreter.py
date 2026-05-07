@@ -1,10 +1,6 @@
-from __future__ import annotations
-
 import os
-from typing import Tuple
 
-
-def get_execution_context() -> Tuple[str, str | None]:
+def get_execution_context():
     """
     Determine whether the code is running in a Python script or a Jupyter notebook.
 
