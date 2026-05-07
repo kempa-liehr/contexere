@@ -1,4 +1,5 @@
 import os
+import sys
 
 def get_execution_context():
     """
@@ -36,12 +37,14 @@ def get_execution_context():
     except Exception:
         pass
 
-    # --- Fallback: assume script execution ---
-    try:
-        return "script", os.path.basename(__file__)
-    except NameError:
-        # Interactive Python shell or edge case
-        return "script", None
+        # --- Script execution: use __main__ module ---
+    main_module = sys.modules.get("__main__")
+
+    if main_module and hasattr(main_module, "__file__"):
+        return "script", os.path.basename(main_module.__file__)
+
+    # Fallback (interactive / embedded)
+    return "script", None
 
 if __name__ == "__main__":
     context, name = get_execution_context()
