@@ -1,6 +1,7 @@
 anytree
 cookiecutter-data-science
 GitPython
+ipynbname
 pandas
 pytz
 sqlalchemy
