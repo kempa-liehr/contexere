@@ -78,13 +78,6 @@ def parse_args(args):
         action="store_true"
     )
     parser.add_argument(
-        "-t",
-        "--time",
-        dest="time",
-        help="add time abbreviation",
-        action="store_true"
-    )  
-    parser.add_argument(
         "-u",
         "--utc",
         dest="utc",
