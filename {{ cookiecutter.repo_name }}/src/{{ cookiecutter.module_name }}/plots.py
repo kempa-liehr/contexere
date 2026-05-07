@@ -1,6 +1,6 @@
-from pathlib import Path
-
 from loguru import logger
+import matplotlib.pyplot as plt
+from pathlib import Path
 from tqdm import tqdm
 import typer
 
@@ -8,6 +8,10 @@ from {{ cookiecutter.module_name }}.config import FIGURES_DIR, PROCESSED_DATA_DI
 
 app = typer.Typer()
 
+def savefig(stem, ax=plt, suffix='pdf', path=FIGURES_DIR):
+    fn = f'{stem}.{suffix}'
+    ax.savefig(path / fn, bbox_inches='tight')
+    return fn
 
 @app.command()
 def main(
