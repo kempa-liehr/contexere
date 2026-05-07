@@ -1,8 +1,8 @@
 import itertools
 import re
-from typing import Any
 
 from contexere.conf import __GENERATORS__
+from contexere.data.interfaces.interpreter import get_execution_context
 
 # Define the scheme with named groups
 __pattern__ = re.compile(r'^(?P<project>[a-zA-Z]{2,})'
@@ -13,6 +13,17 @@ __partial__ = re.compile(r'^(?:(?P<project>[a-zA-Z]{2,})(?=\d))?'
                          r'(?P<date>\d{2}[o-z][1-9A-V]|[o-z][1-9A-V]|[1-9A-V]|)'
                          r'(?P<step>[a-z])$')
 __project__ = re.compile(r'^(?P<project>[a-zA-Z]{2,})')
+
+
+def get_filename(*keywords, **parameters):
+    _, name = get_execution_context()
+    notebookID = name.split('__')[0]
+
+    filestem = '__'.join([notebookID] +
+                         [str(k).replace(' ', '_') for k in keywords] +
+                         [f'{str(key).replace(' ', '')}_{str(value).replace(' ', '')}'
+                          for key, value in parameters.items()])
+    return filestem
 
 def confirm_rag(token, pattern=__pattern__):
     match = pattern.match(token)
