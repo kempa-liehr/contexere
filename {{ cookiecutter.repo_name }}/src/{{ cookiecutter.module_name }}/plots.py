@@ -1,17 +1,43 @@
+from contexere.data.interfaces.interpreter import get_execution_context
 from loguru import logger
-import matplotlib.pyplot as plt
 from pathlib import Path
 from tqdm import tqdm
 import typer
 
-from {{ cookiecutter.module_name }}.config import FIGURES_DIR, PROCESSED_DATA_DIR
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
+
+from {{ cookiecutter.module_name }}.config import FIGURES_DIR, PROCESSED_DATA_DIR, AUTHOR_NAME, PROJECT_NAME, PROJECT_ID
 
 app = typer.Typer()
 
-def savefig(stem, ax=plt, suffix='pdf', path=FIGURES_DIR):
-    fn = f'{stem}.{suffix}'
-    ax.savefig(path / fn, bbox_inches='tight')
+def savefig(stem, plotter=plt, suffix='pdf', path=FIGURES_DIR,
+            author=AUTHOR_NAME, project_id=PROJECT_ID, project_name=PROJECT_NAME):
+    implicit_suffix = stem.split('.')[-1]
+    if implicit_suffix in ['pdf', 'png', 'svg']:
+        fn = stem
+    else:
+        assert suffix in ['pdf', 'png', 'svg']
+        fn = f'{stem}.{suffix}'
+    filepath = path / fn
+    descriptor = {'Contributor' if suffix == 'svg' else 'Author': author,
+                  'Title': f'{stem} -- {project_name} ({project_id})',
+                  'Creator': get_execution_context()[1],
+                  }
+    if plotter is None:
+        logger.warning(f'File {fn} cannot be saved, because `plotter` is {str(plotter)}!.')
+    elif not hasattr(plotter, 'savefig'):
+        logger.warning(f'File {fn} cannot be saved, because `plotter` {str(plotter)} does not implement `.savefig()`!')
+    else:
+        try:
+            plotter.savefig(filepath, bbox_inches='tight', metadata=descriptor)
+        except:
+            logger.warning(
+                f"File {fn} cannot be saved, because `plotter` {str(plotter)} does not implement options `bbox_inches` and `metadata` as defined by matplotlib.pyplot.savefig()!")
     return fn
+
 
 @app.command()
 def main(
