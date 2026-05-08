@@ -22,6 +22,11 @@ REPORTS_DIR = PROJ_ROOT / "reports"
 RESULTS_DIR = PROJ_ROOT / "results"
 FIGURES_DIR = RESULTS_DIR / "figs"
 
+AUTHOR_NAME = "{{ cookiecutter.author_name }}"
+PROJECT_NAME = "{{ cookiecutter.project_name }}"
+PROJECT_ID = "{{ cookiecutter.repo_name }}"
+DESCRIPTION = "{{ cookiecutter.description }}"
+
 # If tqdm is installed, configure loguru with tqdm.write
 # https://github.com/Delgan/loguru/issues/135
 try:
