@@ -49,6 +49,6 @@ def test_project_and_summary(monkeypatch, capsys, temp_dir):
     captured_summary = capsys.readouterr().out.splitlines()[-3:]
 
     expected =  ['Project RAGs Files Latest',
-                 'ERP        1     1  ' + abbreviate_date(local=True) + 'a',
+                 'ERP        1     3  ' + abbreviate_date(local=True) + 'a',
                  'KM         1     1  26qGb']
     assert expected == captured_summary
