@@ -26,9 +26,9 @@ def get_execution_context():
                 # Running inside Jupyter
                 try:
                     import ipynbname
-                    return "notebook", ipynbname.name()
+                    return ".ipynb", ipynbname.name()
                 except Exception:
-                    return "notebook", None
+                    return ".ipynb", None
 
             elif shell in ("TerminalInteractiveShell",):
                 # IPython terminal, treat as script-like
@@ -41,10 +41,10 @@ def get_execution_context():
     main_module = sys.modules.get("__main__")
 
     if main_module and hasattr(main_module, "__file__"):
-        return "script", os.path.basename(main_module.__file__)
+        return ".py", os.path.basename(main_module.__file__)
 
     # Fallback (interactive / embedded)
-    return "script", None
+    return ".py", None
 
 if __name__ == "__main__":
     context, name = get_execution_context()
