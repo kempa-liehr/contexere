@@ -5,4 +5,5 @@ ipynbname
 pandas
 pytz
 sqlalchemy
+tzlocal
 chardet<6
