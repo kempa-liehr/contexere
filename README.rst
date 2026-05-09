@@ -113,6 +113,11 @@ finds the latest research artefact group (RAG) and uses the respective project i
     $ nxt
     ERP26s6b
 
+.. image:: images/KM26s6j_i_f__annotated_folder_structure.png
+    :alt: Project overview
+    :width: 1200px
+
+
 The suggested RAG ``ERP26s6b`` is the second RAG (``b``) of 9 May 2026, because ``nxt --project`` creates template
 files starting with ``ERP26s6a`` like ``notebooks/ERP26s6a__template_notebook.ipynb``.
 
