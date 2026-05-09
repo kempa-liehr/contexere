@@ -50,5 +50,5 @@ def test_project_and_summary(monkeypatch, capsys, temp_dir):
 
     expected =  ['Project RAGs Files Latest',
                  'ERP        1     3  ' + abbreviate_date(local=True) + 'a',
-                 'KM         1     1  26qGb']
+                 'KM         1     1  26oOa']
     assert expected == captured_summary
