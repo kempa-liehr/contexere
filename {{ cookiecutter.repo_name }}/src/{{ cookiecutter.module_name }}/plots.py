@@ -21,8 +21,9 @@ def savefig(stem, plotter=plt, suffix='pdf', path=FIGURES_DIR,
     else:
         assert suffix in ['pdf', 'png', 'svg']
         fn = f'{stem}.{suffix}'
+        implicit_suffix = suffix
     filepath = path / fn
-    descriptor = {'Contributor' if suffix == 'svg' else 'Author': author,
+    descriptor = {'Contributor' if implicit_suffix == 'svg' else 'Author': author,
                   'Title': f'{stem} -- {project_name} ({project_id})',
                   'Creator': get_execution_context()[1],
                   }
