@@ -2,6 +2,15 @@
 Changelog
 =========
 
+Version 1.1.0
+=============
+- Add cloning of research artefacts
+- Add `savefig()` function to the source code scaffold supporting , which supports saving of metadata.
+- Add template LaTeX report
+- Add template Jupyter notebook
+- Add `results` folder and remove `models` folder
+- Cloned research artefacts are automatically added to the local git repository
+
 Version 1.0.0
 =============
 - Rename CLI from `name` to `nxt` (pronounce "next")
