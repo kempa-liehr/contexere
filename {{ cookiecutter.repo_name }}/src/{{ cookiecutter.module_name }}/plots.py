@@ -23,9 +23,10 @@ def savefig(stem, plotter=plt, suffix='pdf', path=FIGURES_DIR,
         fn = f'{stem}.{suffix}'
         implicit_suffix = suffix
     filepath = path / fn
+    script_suffix, script_name = get_execution_context()
     descriptor = {'Contributor' if implicit_suffix == 'svg' else 'Author': author,
                   'Title': f'{stem} -- {project_name} ({project_id})',
-                  'Creator': get_execution_context()[1],
+                  'Creator': f'{script_name}.{script_suffix}',
                   }
     if plotter is None:
         logger.warning(f'File {fn} cannot be saved, because `plotter` is {str(plotter)}!.')
