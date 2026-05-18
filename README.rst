@@ -165,5 +165,6 @@ Create a fourth notebook named::
 Again providing an efficient referencing of the input RAGs and thus creating a directed graph of RAGs.
 Note, that the provided reference ``s6b`` is an abbreviation of ``ERP26s6b``.
 
-[1] Martin Kühne and Andreas W. Liehr. Improving the traditional information management in natural sciences. Data Science Journal, 8(1):18–26, 2009, doi: [10.2481/dsj.8.18](https://doi.org/10.2481/dsj.8.18).
+[1] Martin Kühne and Andreas W. Liehr. Improving the traditional information management in natural sciences. Data Science Journal, 8(1):18–26, 2009, doi: [10.2481/dsj.8.18](https://doi.org/10.2481/dsj.8.18)
+
 [2] Andreas W. Kempa-Liehr. Contexere—Systematic Tracking and Referencing of Digital Artefacts for Postgraduate Students and Early Career Researchers. Preprint, 2026, doi: [10.20944/preprints202605.0993.v1](https://doi.org/10.20944/preprints202605.0993.v1)
