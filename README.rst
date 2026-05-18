@@ -1,19 +1,19 @@
-
 =========
 contexere
 =========
 
 Naming convention for research artefacts
-----------------------------------------
+-----------------------------------------
 
 Scientists and engineers create a multitude of digital artefacts during their daily work [1]:
-    - experimental results,
-    - simulation results,
-    - literate programming notebooks analysing experiments and simulations
-    - statistical models,
-    - machine learning models,
-    - figures,
-    - tables, etc
+
+- experimental results,
+- simulation results,
+- literate programming notebooks analysing experiments and simulations
+- statistical models,
+- machine learning models,
+- figures,
+- tables, etc
 
 In order to trace and track these multiple interconnected research artefacts, hierarchical naming schemes
 are a powerful tool to document the connection between research artefacts, find previous research outputs, and enable reproducible research [2].
@@ -27,11 +27,11 @@ The general scheme is: ``PIyymDc[_x]__keyword``
 -   ``m``: [o-z] these letters map to the respective months.
 -   ``D``: [1-9,A-V] represent the 31 days of a month. Digits and upper-case characters have approximately the same height, such that this element gives a visual structure to the name, which divides the date from the daily counter.
 -   ``c``: [a-z] daily counter as lower-case letter enumerating the respective database or dataset.
--   ``x``: Optional attribute being the last significant characters of the dataset, from which `DSyymde` is derived.
--   ``keyword``: One or more keywords separated by `__`.
+-   ``x``: Optional attribute being the last significant characters of the dataset, from which ``DSyymde`` is derived.
+-   ``keyword``: One or more keywords separated by ``__``.
 
 +-------+-----------+-------+-----+-------+-----+-------+-----+
-| month ``m``       | day ``d``   | day ``d``   | day ``d``   |
+| ``m`` | month     | ``D`` | day | ``D`` | day | ``D`` | day |
 +=======+===========+=======+=====+=======+=====+=======+=====+
 | ``o`` | January   | ``1`` |   1 | ``B`` |  11 | ``L`` |  21 |
 +-------+-----------+-------+-----+-------+-----+-------+-----+
@@ -66,12 +66,14 @@ The general scheme is: ``PIyymDc[_x]__keyword``
 
 Installation
 ============
+
 The module ``contexere`` can be installed from PyPi::
 
     pip install contexere
 
 Usage
 =====
+
 The project provides the command line tool ``nxt``::
 
     usage: nxt [-h] [--version] [-g GROUP] [-k KEYWORDS [KEYWORDS ...]] [-l] [-p] [-r [REFERENCE]] [-s] [-u] [-v] [-vv] [target]
@@ -116,7 +118,6 @@ finds the latest research artefact group (RAG) and uses the respective project i
 .. image:: images/KM26s6j_i_f__annotated_folder_structure.png
     :alt: Project overview
     :width: 1200px
-
 
 The suggested RAG ``ERP26s6b`` is the second RAG (``b``) of 9 May 2026, because ``nxt --project`` creates template
 files starting with ``ERP26s6a`` like ``notebooks/ERP26s6a__template_notebook.ipynb``.
@@ -165,6 +166,6 @@ Create a fourth notebook named::
 Again providing an efficient referencing of the input RAGs and thus creating a directed graph of RAGs.
 Note, that the provided reference ``s6b`` is an abbreviation of ``ERP26s6b``.
 
-[1] Martin Kühne and Andreas W. Liehr. Improving the traditional information management in natural sciences. Data Science Journal, 8(1):18–26, 2009, doi: [10.2481/dsj.8.18](https://doi.org/10.2481/dsj.8.18)
+[1] Martin Kühne and Andreas W. Liehr. Improving the traditional information management in natural sciences. Data Science Journal, 8(1):18–26, 2009, doi: `10.2481/dsj.8.18 <https://doi.org/10.2481/dsj.8.18>`_
 
-[2] Andreas W. Kempa-Liehr. Contexere—Systematic Tracking and Referencing of Digital Artefacts for Postgraduate Students and Early Career Researchers. Preprint, 2026, doi: [10.20944/preprints202605.0993.v1](https://doi.org/10.20944/preprints202605.0993.v1)
+[2] Andreas W. Kempa-Liehr. Contexere—Systematic Tracking and Referencing of Digital Artefacts for Postgraduate Students and Early Career Researchers. Preprint, 2026, doi: `10.20944/preprints202605.0993.v1 <https://doi.org/10.20944/preprints202605.0993.v1>`_
