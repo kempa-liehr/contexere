@@ -27,7 +27,7 @@ if not __CONTEXERE_CACHE_DIR__.exists():
     __CONTEXERE_CACHE_DIR__.mkdir()
 
 __CONTEXERE_CACHE_DB__ = __CONTEXERE_CACHE_DIR__ / 'context.db'
-__COOKIECUTTER_PATH__ = Path(files("contexere")).parents[1]
+__COOKIECUTTER_PATH__ = Path(files("contexere")) / '_template'
 
 config_file_path = __CONTEXERE_CACHE_DIR__ / 'conf.ini'
 if not config_file_path.exists():
