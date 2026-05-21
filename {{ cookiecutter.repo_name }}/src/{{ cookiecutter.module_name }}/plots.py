@@ -15,15 +15,17 @@ app = typer.Typer()
 
 def savefig(stem, plotter=plt, suffix='pdf', path=FIGURES_DIR,
             author=AUTHOR_NAME, project_id=PROJECT_ID, project_name=PROJECT_NAME):
+    script_suffix, script_name = get_execution_context()
+    rag = script_name.split('__')[0]
     implicit_suffix = stem.split('.')[-1]
     if implicit_suffix in ['pdf', 'png', 'svg']:
-        fn = stem
+        fn = f"{rag}__{stem.replace(' ', '_')}"
     else:
         assert suffix in ['pdf', 'png', 'svg']
-        fn = f'{stem}.{suffix}'
+        fn = f"{rag}__{stem.replace(' ', '_')}.{suffix}"
         implicit_suffix = suffix
     filepath = path / fn
-    script_suffix, script_name = get_execution_context()
+    
     descriptor = {'Contributor' if implicit_suffix == 'svg' else 'Author': author,
                   'Title': f'{stem} -- {project_name} ({project_id})',
                   'Creator': f'{script_name}.{script_suffix}',
