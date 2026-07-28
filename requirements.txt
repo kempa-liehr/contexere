@@ -7,3 +7,6 @@ pytz
 sqlalchemy
 tzlocal
 chardet<6
+loguru
+python-dotenv
+
