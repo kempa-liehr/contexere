@@ -2,6 +2,17 @@
 Changelog
 =========
 
+Version 1.2.0
+=============
+- Define convenience plotting functions `distribution()` and `distributions()` if the respective packages are available.
+- Extend dependencies such that the template Python package can be imported in a standard data science environment.
+- Ensure that the project template is included in the Python package.
+- Fix missing RAG in files created with `savefig()`.
+- Figure metadata reference the suffix of the creating script.
+- Fix `graphicspath` in LaTeX template.
+- Fix SVG metadata.
+
+
 Version 1.1.0
 =============
 - Add cloning of research artefacts
