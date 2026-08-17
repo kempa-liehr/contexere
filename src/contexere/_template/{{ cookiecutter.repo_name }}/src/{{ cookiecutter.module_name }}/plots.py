@@ -1,4 +1,5 @@
 from contexere.data.interfaces.interpreter import get_execution_context
+import numpy as np
 from loguru import logger
 from pathlib import Path
 from tqdm import tqdm
