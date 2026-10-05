@@ -5,9 +5,12 @@ from contexere.conf import __GENERATORS__
 from contexere.data.interfaces.interpreter import get_execution_context
 
 # Define the scheme with named groups
+__date_regex__ = r'(?P<date>[0-9]{2}[o-z][1-9A-V])'
+__step_regex__ = r'(?P<step>[a-z])'
+__stage__ = re.compile(__date_regex__ + __step_regex__)
 __pattern__ = re.compile(r'^(?P<project>[a-zA-Z]{2,})'
-                         r'(?P<date>[0-9]{2}[o-z][1-9A-V])'
-                         r'(?P<step>[a-z])'
+                         + __date_regex__
+                         + __step_regex__ +
                          r'(?:(?:_{1,2}| )(?P<kwds>.+)|_{1,2})?$')
 __partial__ = re.compile(r'^(?:(?P<project>[a-zA-Z]{2,})(?=\d))?'
                          r'(?P<date>\d{2}[o-z][1-9A-V]|[o-z][1-9A-V]|[1-9A-V]|)'
@@ -35,6 +38,15 @@ def artefact_name(*keywords, **parameters):
                          [str(key).replace(' ', '') + '_' + str(value).replace(' ', '')
                           for key, value in parameters.items()])
     return file_stem
+
+def confirm_stage(token, pattern=__stage__):
+    match = pattern.match(token)
+    if match:
+        date = match.group('date')
+        step = match.group('step')
+    else:
+        date, step = None, None
+    return date, step
 
 def confirm_rag(token, pattern=__pattern__):
     match = pattern.match(token)
