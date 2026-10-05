@@ -1,15 +1,3 @@
-anytree
-cookiecutter-data-science
-GitPython
-ipynbname
-pandas
-pytz
-sqlalchemy
-tzlocal
-chardet<6
-loguru
-python-dotenv
-tqdm
-typer
+-e .
 
 
